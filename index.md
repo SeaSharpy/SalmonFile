@@ -1,3 +1,1 @@
----
-redirect_url: api/Salmon.html
----
+[!INCLUDE [SalmonFile README](README.md)]
