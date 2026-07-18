@@ -1,4 +1,4 @@
-public static class Vector3Extensions
+internal static class Vector3Extensions
 {
     extension(Vector3 v)
     {
@@ -45,7 +45,7 @@ public static class Vector3Extensions
         }
     }
 }
-public static class Debug
+internal static class Debug
 {
     public static void Log(object message) => Console.WriteLine(message);
     public static void LogException(Exception exception) => Console.WriteLine(exception);
@@ -54,13 +54,16 @@ public static class Debug
 
 namespace Salmon
 {
-    public static class CustomMaterials
+    internal static class CustomMaterials
     {
         public static string GetKey(int index) => $"Custom {index + 1}";
     }
+    /// <summary>Provides storage paths relative to the process's current working directory.</summary>
     public static class StorageLocations
     {
+        /// <summary>The relative directory containing level categories.</summary>
         public static string LevelPath => "Levels";
+        /// <summary>The relative directory containing leaderboard data.</summary>
         public static string LeaderboardPath => "Leaderboards";
     }
 }

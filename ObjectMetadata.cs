@@ -2,18 +2,22 @@ using System.Reflection;
 
 namespace Salmon.Levels;
 
+/// <summary>Associates a serialized level object type with its stable display name.</summary>
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class ObjectTypeAttribute : Attribute
 {
+    /// <summary>The serialized display name.</summary>
     public string DisplayName { get; }
 
+    /// <summary>Creates object type metadata.</summary>
+    /// <param name="displayName">The stable name written to Salmon files.</param>
     public ObjectTypeAttribute(string displayName)
     {
         DisplayName = displayName;
     }
 }
 
-public static class ObjectMetadata
+internal static class ObjectMetadata
 {
     private static readonly IReadOnlyDictionary<string, int> ObjectTypePriorities = new Dictionary<string, int>
     {

@@ -2,11 +2,16 @@ using System.Diagnostics;
 
 namespace Salmon.Levels;
 
+/// <summary>Stores the level object tree and editor selection state.</summary>
 public sealed class ObjectsSection : LevelSection
 {
+    /// <summary>The root of the level object hierarchy.</summary>
     public Group Root = new();
+    /// <summary>The identifier of the group currently open in the editor.</summary>
     public ulong GroupID = 0;
+    /// <summary>The identifiers of the objects selected in the editor.</summary>
     public ulong[] SelectedIDs = [];
+    /// <inheritdoc/>
     public override void Write(BinaryWriter writer)
     {
         DynamicSerializer.Serialize(Root, writer);
@@ -16,6 +21,7 @@ public sealed class ObjectsSection : LevelSection
             writer.Write(id);
     }
 
+    /// <inheritdoc/>
     public override void Read(BinaryReader reader)
     {
         Root = (Group)DynamicSerializer.Deserialize(typeof(Group), reader);
@@ -152,6 +158,7 @@ public sealed class ObjectsSection : LevelSection
             }
         }
     }
+    /// <inheritdoc/>
     public override void Normalize()
     {
         EnsureUniqueObjectNames();
@@ -182,6 +189,7 @@ public sealed class ObjectsSection : LevelSection
                     objects.Push(child);
         }
     }
+    /// <summary>Ensures every group contains non-empty, case-insensitively unique child names.</summary>
     public void EnsureUniqueObjectNames()
     {
         foreach (var obj in Root.Recurse())
@@ -189,6 +197,8 @@ public sealed class ObjectsSection : LevelSection
                 EnsureUniqueObjectNames(currentGroup);
     }
 
+    /// <summary>Ensures a group's children have non-empty, case-insensitively unique names.</summary>
+    /// <param name="group">The group to normalize.</param>
     public static void EnsureUniqueObjectNames(Group group)
     {
         var allocator = new ObjectNameAllocator(group.Objects.Count);
@@ -204,6 +214,11 @@ public sealed class ObjectsSection : LevelSection
         }
     }
 
+    /// <summary>Allocates a unique name among a list of sibling objects.</summary>
+    /// <param name="name">The preferred name.</param>
+    /// <param name="siblings">The sibling objects whose names are reserved.</param>
+    /// <param name="self">An optional object to exclude from the reserved names.</param>
+    /// <returns>The original name or a numbered unique variant.</returns>
     public static string GetUniqueObjectName(
         string name,
         List<ObjectDefinition> siblings,

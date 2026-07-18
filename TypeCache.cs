@@ -1,6 +1,7 @@
 using System.Reflection;
 namespace Salmon;
-public sealed class DynamicInspectorField(float order, Type valueType, InspectorFieldAttribute attribute, Func<object, object> getValue, Action<object, object> setValue)
+
+internal sealed class DynamicInspectorField(float order, Type valueType, InspectorFieldAttribute attribute, Func<object, object> getValue, Action<object, object> setValue)
 {
     public string Label => Attribute.Label;
     public readonly float Order = order;
@@ -9,7 +10,8 @@ public sealed class DynamicInspectorField(float order, Type valueType, Inspector
     public readonly Func<object, object> GetValue = getValue;
     public readonly Action<object, object> SetValue = setValue;
 }
-public sealed class DynamicInspectorButton(float order, InspectorButtonAttribute attribute, DynamicInspectorButton.DynamicInspectorButtonDelegate onClick)
+
+internal sealed class DynamicInspectorButton(float order, InspectorButtonAttribute attribute, DynamicInspectorButton.DynamicInspectorButtonDelegate onClick)
 {
     public delegate void DynamicInspectorButtonDelegate(object target);
     public string Label => Attribute.Label;
@@ -17,14 +19,14 @@ public sealed class DynamicInspectorButton(float order, InspectorButtonAttribute
     public readonly InspectorButtonAttribute Attribute = attribute;
     public readonly DynamicInspectorButtonDelegate OnClick = onClick;
 }
-public sealed class DynamicInspectorType(DynamicInspectorField[] fields, DynamicInspectorButton[] buttons, Dictionary<float, DynamicInspectorField> fieldsByOrder, Dictionary<InspectorHandleType, DynamicInspectorField> fieldsByHandle)
+internal sealed class DynamicInspectorType(DynamicInspectorField[] fields, DynamicInspectorButton[] buttons, Dictionary<float, DynamicInspectorField> fieldsByOrder, Dictionary<InspectorHandleType, DynamicInspectorField> fieldsByHandle)
 {
     public readonly DynamicInspectorField[] Fields = fields;
     public readonly DynamicInspectorButton[] Buttons = buttons;
     public readonly Dictionary<float, DynamicInspectorField> FieldsByOrder = fieldsByOrder;
     public readonly Dictionary<InspectorHandleType, DynamicInspectorField> FieldsByHandle = fieldsByHandle;
 }
-public static class TypeCache
+internal static class TypeCache
 {
     public static Dictionary<Type, DynamicInspectorType> Types = new();
     private static object ClampNumber(object value, Type type, float min, float max)
@@ -140,7 +142,11 @@ public static class TypeCache
             return serializerType;
         List<DynamicInspectorField> dynamicFields = new List<DynamicInspectorField>();
         List<DynamicInspectorButton> dynamicButtons = new List<DynamicInspectorButton>();
-        var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public);
+        var fields = type.GetFields(
+            BindingFlags.Instance |
+            BindingFlags.Public |
+            BindingFlags.NonPublic
+        );
         foreach (var field in fields)
         {
             var attribute = field.GetCustomAttribute<InspectorFieldAttribute>();

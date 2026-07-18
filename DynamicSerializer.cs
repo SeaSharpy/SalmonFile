@@ -2,14 +2,23 @@ using System.Reflection;
 using System.Collections;
 using System.Text;
 namespace Salmon;
+/// <summary>Provides custom payload serialization for types that require data beyond inspector fields.</summary>
 public interface ISpecialSerializable
 {
+    /// <summary>Writes the custom payload after the object's regular fields.</summary>
+    /// <param name="writer">The destination writer.</param>
     void SpecialWrite(BinaryWriter writer);
+    /// <summary>Reads the custom payload after the object's regular fields.</summary>
+    /// <param name="reader">The source reader.</param>
     void SpecialRead(BinaryReader reader);
 }
+/// <summary>Serializes inspector fields into the version-tolerant binary format used by Salmon files.</summary>
 public static class DynamicSerializer
 {
     private const int MaximumCollectionCount = ushort.MaxValue;
+    /// <summary>Serializes an object to a new byte array.</summary>
+    /// <param name="obj">The object to serialize.</param>
+    /// <returns>The serialized object payload.</returns>
     public static byte[] Serialize(object obj)
     {
         using var stream = new MemoryStream();
@@ -19,6 +28,9 @@ public static class DynamicSerializer
         
         return bytes;
     }
+    /// <summary>Serializes an object to a binary writer.</summary>
+    /// <param name="obj">The object to serialize.</param>
+    /// <param name="writer">The destination writer.</param>
     public static void Serialize(object obj, BinaryWriter writer)
     {
         // Get type from cache
@@ -89,6 +101,10 @@ public static class DynamicSerializer
             writer.Write(false);
     }
 
+    /// <summary>Deserializes an object from a byte array.</summary>
+    /// <param name="type">The concrete object type to create.</param>
+    /// <param name="bytes">The serialized object payload.</param>
+    /// <returns>The deserialized object.</returns>
     public static object Deserialize(Type type, byte[] bytes)
     {
         using var stream = new MemoryStream(bytes);
@@ -96,6 +112,10 @@ public static class DynamicSerializer
         return Deserialize(type, reader);
     }
 
+    /// <summary>Deserializes and creates an object from a binary reader.</summary>
+    /// <param name="type">The concrete object type to create.</param>
+    /// <param name="reader">The source reader.</param>
+    /// <returns>The deserialized object.</returns>
     public static object Deserialize(Type type, BinaryReader reader)
     {
         if (GeneratedDynamicSerializers.TryRead(type, reader, out var obj))
@@ -104,6 +124,10 @@ public static class DynamicSerializer
         Deserialize(type, obj, reader);
         return obj;
     }
+    /// <summary>Populates an existing object from a binary reader.</summary>
+    /// <param name="type">The object's concrete type.</param>
+    /// <param name="obj">The object to populate.</param>
+    /// <param name="reader">The source reader.</param>
     public static void Deserialize(Type type, object obj, BinaryReader reader)
     {
         var serializerType = TypeCache.Get(type); 
@@ -529,20 +553,20 @@ public static class DynamicSerializer
             return false;
         return true;
     }
-    public static void Write(this BinaryWriter writer, Vector3 vector)
+    internal static void Write(this BinaryWriter writer, Vector3 vector)
     {
         writer.Write(vector.x);
         writer.Write(vector.y);
         writer.Write(vector.z);
     }
-    public static Vector3 ReadVector3(this BinaryReader reader)
+    internal static Vector3 ReadVector3(this BinaryReader reader)
     {
         var x = reader.ReadSingle();
         var y = reader.ReadSingle();
         var z = reader.ReadSingle();
         return new Vector3(x, y, z);
     }
-    public static Quaternion ReadQuaternion(this BinaryReader reader)
+    internal static Quaternion ReadQuaternion(this BinaryReader reader)
     {
         var x = reader.ReadSingle();
         var y = reader.ReadSingle();
@@ -550,7 +574,7 @@ public static class DynamicSerializer
         var w = reader.ReadSingle();
         return new Quaternion(x, y, z, w);
     }
-    public static void Write(this BinaryWriter writer, Quaternion quaternion)
+    internal static void Write(this BinaryWriter writer, Quaternion quaternion)
     {
         writer.Write(quaternion.x);
         writer.Write(quaternion.y);

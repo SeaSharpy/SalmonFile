@@ -1,43 +1,61 @@
 namespace Salmon.Levels;
 
+/// <summary>Identifies the storage category containing a level.</summary>
 public enum StoredMode : byte
 {
+    /// <summary>A level created or edited locally.</summary>
     Created,
+    /// <summary>A level downloaded from the online browser.</summary>
     Downloaded,
+    /// <summary>A built-in main level.</summary>
     Main,
 }
 
-[Serializable]
-public sealed partial class Level : IDisposable
+/// <summary>Represents a versioned <c>.salmon</c> level and its lazily loaded sections.</summary>
+public sealed partial class Level() : IDisposable
 {
-    public Level()
-    {
-        
-    }
-
-    public const int CurrentVersion = 21;
-    public const int MinVersion = 7;
+    private const int CurrentVersion = 21;
+    private const int MinVersion = 7;
     private const string Magic = "SALMONLEVEL";
     private readonly Dictionary<SectionKind, SectionHeader> Sections = [];
+    /// <summary>The open stream backing this level, or <see langword="null"/> for a new level.</summary>
     public FileStream Stream;
+    /// <summary>The reader associated with <see cref="Stream"/>, or <see langword="null"/> for a new level.</summary>
     public BinaryReader Reader;
     private bool Loaded;
     private int Version = CurrentVersion;
     private string IDInternal = "";
 
+    /// <summary>The level file's last modification time in UTC.</summary>
     public DateTime LastModifiedUTC;
+    /// <summary>The level's metadata section.</summary>
     public MetadataSection Metadata { get; } = new();
+    /// <summary>The level editor settings section.</summary>
     public SettingsSection SettingsSection { get; private set; } = new();
+    /// <summary>The object hierarchy section.</summary>
     public ObjectsSection ObjectsSection { get; private set; } = new();
+    /// <summary>The level preview image section.</summary>
     public PreviewSection Preview { get; } = new();
+    /// <summary>The custom materials section.</summary>
     public MaterialsSection Materials { get; private set; } = new();
+    /// <summary>The storage category used to resolve <see cref="Path"/>.</summary>
     public StoredMode Mode = StoredMode.Created;
+    /// <summary>The level identifier used as the file name.</summary>
     public string ID { get => IDInternal; set => IDInternal = value ?? ""; }
+    /// <summary>The normalized level title.</summary>
     public string Title { get => Metadata.Title; set => Metadata.Title = value ?? ""; }
+    /// <summary>The normalized level author.</summary>
     public string Author { get => Metadata.Author; set => Metadata.Author = value ?? ""; }
+    /// <summary>The root object group.</summary>
     public Group Root { get => ObjectsSection.Root; set => ObjectsSection.Root = value ?? new(); }
+    /// <summary>The level editor settings.</summary>
     public SettingsDefinition Settings { get => SettingsSection.Settings; set => SettingsSection.Settings = value ?? new(); }
 
+    /// <summary>Opens a level file and reads its header, metadata, and preview.</summary>
+    /// <param name="path">The path to the <c>.salmon</c> file.</param>
+    /// <returns>The partially loaded level.</returns>
+    /// <exception cref="ArgumentException"><paramref name="path"/> is empty or whitespace.</exception>
+    /// <exception cref="InvalidDataException">The file header or version is invalid.</exception>
     public static Level Open(string path)
     {
         if (string.IsNullOrWhiteSpace(path))
@@ -54,6 +72,10 @@ public sealed partial class Level : IDisposable
         return level;
     }
 
+    /// <summary>Attempts to open a level without propagating file or format errors.</summary>
+    /// <param name="path">The path to the <c>.salmon</c> file.</param>
+    /// <param name="level">Receives the partially loaded level when successful.</param>
+    /// <returns><see langword="true"/> when the level was opened; otherwise <see langword="false"/>.</returns>
     public static bool TryOpen(string path, out Level level)
     {
         level = null;
@@ -68,6 +90,7 @@ public sealed partial class Level : IDisposable
         }
     }
 
+    /// <summary>Reads the file header and eagerly loads the metadata and preview sections.</summary>
     public void ReadInitial()
     {
         try
@@ -84,7 +107,7 @@ public sealed partial class Level : IDisposable
         }
     }
 
-    public static Level[] GetLevels(StoredMode mode, Level reusableLevel = null)
+    internal static Level[] GetLevels(StoredMode mode, Level reusableLevel = null)
     {
         var paths = Directory.GetFiles(System.IO.Path.Combine(StorageLocations.LevelPath, mode.ToString()), $"*.salmon");
         var levels = new List<Level>(paths.Length);
@@ -112,7 +135,7 @@ public sealed partial class Level : IDisposable
         return levels.ToArray();
     }
 
-    public static int CompareLevelsByName(Level left, Level right)
+    internal static int CompareLevelsByName(Level left, Level right)
     {
         var titleComparison = string.Compare(left.Title, right.Title, StringComparison.OrdinalIgnoreCase);
         if (titleComparison != 0)
@@ -121,7 +144,7 @@ public sealed partial class Level : IDisposable
         return string.Compare(left.ID, right.ID, StringComparison.OrdinalIgnoreCase);
     }
 
-    public static int CompareLevelsByRecentFirst(Level left, Level right)
+    internal static int CompareLevelsByRecentFirst(Level left, Level right)
     {
         var modifiedComparison = right.LastModifiedUTC.CompareTo(left.LastModifiedUTC);
         if (modifiedComparison != 0)
@@ -129,7 +152,10 @@ public sealed partial class Level : IDisposable
 
         return CompareLevelsByName(left, right);
     }
+    /// <summary>The level path relative to <see cref="StorageLocations.LevelPath"/>.</summary>
     public string Path => System.IO.Path.Combine(StorageLocations.LevelPath, Mode.ToString(), $"{ID}.salmon");
+    /// <summary>Writes the complete current-format level to a binary writer.</summary>
+    /// <param name="outWriter">The destination writer.</param>
     public void Write(BinaryWriter outWriter)
     {
         Load();
@@ -166,6 +192,7 @@ public sealed partial class Level : IDisposable
             outWriter.Write(sections[i].bytes, 0, sections[i].bytes.Length);
     }
 
+    /// <summary>Writes the level to <see cref="Path"/>, replacing its current contents.</summary>
     public void Write()
     {
         using var memoryStream = new MemoryStream();
@@ -183,12 +210,15 @@ public sealed partial class Level : IDisposable
         Sections.Clear();
         ReadHeader();
     }
+    /// <summary>Closes and deletes the level file at <see cref="Path"/>.</summary>
     public void Delete()
     {
         Dispose();
         File.Delete(Path);
     }
 
+    /// <summary>Lazily loads materials, settings, and objects.</summary>
+    /// <returns>This level.</returns>
     public Level Load()
     {
         if (Loaded)
@@ -202,6 +232,7 @@ public sealed partial class Level : IDisposable
         return this;
     }
 
+    /// <summary>Releases loaded section data while keeping metadata and preview available.</summary>
     public void Unload()
     {
         SettingsSection.Dispose();
@@ -213,6 +244,7 @@ public sealed partial class Level : IDisposable
         Loaded = false;
     }
 
+    /// <summary>Normalizes all section data before use or serialization.</summary>
     public void Normalize()
     {
         Metadata.Normalize();
@@ -222,6 +254,7 @@ public sealed partial class Level : IDisposable
         SettingsSection.Normalize();
     }
 
+    /// <summary>Closes the backing file and disposes every section.</summary>
     public void Dispose()
     {
         CloseReader();

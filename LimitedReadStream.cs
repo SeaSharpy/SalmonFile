@@ -1,5 +1,5 @@
 namespace Salmon;
-public sealed class LimitedReadStream : Stream
+internal sealed class LimitedReadStream : Stream
 {
     private readonly Stream Stream;
     private readonly long StartPosition;

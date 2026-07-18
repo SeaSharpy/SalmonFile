@@ -1413,7 +1413,7 @@ internal static class GeneratedDynamicSerializers
                     value.Move = ReadSalmon_Levels_ObjectReferences(reader);
                     break;
                 case 4.0f:
-                    value.MoveSpeedMode = (MoveSpeedMode)reader.ReadByte();
+                    value.MoveSpeedMode = (TriggerSpeedMode)reader.ReadByte();
                     break;
                 case 5.0f:
                     value.MoveSpeed = Clamp(reader.ReadSingle(), 0.0f, 999.0f);
@@ -1572,7 +1572,7 @@ internal static class GeneratedDynamicSerializers
                     value.Rotate = ReadSalmon_Levels_ObjectReferences(reader);
                     break;
                 case 4.0f:
-                    value.RotationSpeedMode = (RotationSpeedMode)reader.ReadByte();
+                    value.RotationSpeedMode = (TriggerSpeedMode)reader.ReadByte();
                     break;
                 case 5.0f:
                     value.RotationSpeed = Clamp(reader.ReadSingle(), 0.0f, 999.0f);

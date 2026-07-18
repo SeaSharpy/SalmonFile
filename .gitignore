@@ -1,3 +1,9 @@
 Update.bat
 bin/
 obj/
+api/
+_site/
+.config/
+toc.yml
+docfx.json
+BuildDocs.ps1

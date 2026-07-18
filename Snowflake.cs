@@ -1,6 +1,6 @@
 namespace Salmon;
 using System.Security.Cryptography;
-public static class Snowflake
+internal static class Snowflake
 {
     private const int SequenceBits = 12;
     private const int SequenceMask = (1 << SequenceBits) - 1;
