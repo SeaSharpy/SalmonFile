@@ -8,3 +8,4 @@ toc.yml
 docfx.json
 BuildDocs.ps1
 index.md
+styles/

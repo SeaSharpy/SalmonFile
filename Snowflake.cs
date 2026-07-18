@@ -1,6 +1,7 @@
 namespace Salmon;
 using System.Security.Cryptography;
-internal static class Snowflake
+/// <summary>Creates identifiers for SALMON data.</summary>
+public static class Snowflake
 {
     private const int SequenceBits = 12;
     private const int SequenceMask = (1 << SequenceBits) - 1;
@@ -9,6 +10,8 @@ internal static class Snowflake
         new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero).ToUnixTimeMilliseconds();
     private static long LastTimestamp;
     private static int Sequence;
+    /// <summary>Creates a numeric identifier suitable for an uploadable level.</summary>
+    /// <returns>A string containing only decimal digits.</returns>
     public static string Create()
     {
         ulong value = CreateULong();
@@ -24,7 +27,7 @@ internal static class Snowflake
 
         return $"{prefix.ToString()}{valueText}";
     }
-    public static ulong CreateULong()
+    internal static ulong CreateULong()
     {
         lock (Sync)
         {
