@@ -7,9 +7,8 @@ The `.salmon` file format library for SALMON levels. It does not cover the game'
 ## Creating and saving a level
 
 Create a `Level`, generate its numeric ID with `Snowflake.Create()`, then add
-objects to its root group. Do not let a user choose the ID when the level may be
-uploaded: the upload service accepts numeric IDs, and `Snowflake.Create()`
-generates the expected form without user input.
+objects to its root group. The uploading only accepts numeric IDs, and `Snowflake.Create()`
+generates the expected form without your input.
 
 ```csharp
 using Salmon;
@@ -48,8 +47,7 @@ level.Write();
 `Write()` normalizes the level, creates the destination directory, and writes
 the file to `Levels/Created/<generated ID>.salmon` relative to the process's
 current working directory. Other `StoredMode` values select the corresponding
-subdirectory. The upload service overwrites `Author` with the authenticated
-uploader's identity, so the local value does not control online attribution.
+subdirectory. The upload overwrites `Author` with your Steam username, so the local value does not control online author.
 
 To write somewhere outside the standard storage tree, provide your own writer:
 
