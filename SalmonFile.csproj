@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <PackageLicenseExpression>CC-BY-NC-SA-4.0</PackageLicenseExpression>
+    <Copyright>Copyright (c) 2026 SeaSharpy</Copyright>
+  </PropertyGroup>
+
+</Project>
