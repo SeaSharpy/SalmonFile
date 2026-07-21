@@ -12,7 +12,7 @@ public enum StoredMode : byte
 }
 
 /// <summary>Represents a versioned <c>.salmon</c> level and its lazily loaded sections.</summary>
-public sealed partial class Level() : IDisposable
+public sealed partial class Level : IDisposable
 {
     private const int CurrentVersion = 21;
     private const int MinVersion = 7;
@@ -29,15 +29,15 @@ public sealed partial class Level() : IDisposable
     /// <summary>The level file's last modification time in UTC.</summary>
     public DateTime LastModifiedUTC;
     /// <summary>The level's metadata section.</summary>
-    public MetadataSection Metadata { get; } = new();
+    public MetadataSection Metadata { get; }
     /// <summary>The level editor settings section.</summary>
-    public SettingsSection SettingsSection { get; private set; } = new();
+    public SettingsSection SettingsSection { get; private set; }
     /// <summary>The object hierarchy section.</summary>
-    public ObjectsSection ObjectsSection { get; private set; } = new();
+    public ObjectsSection ObjectsSection { get; private set; }
     /// <summary>The level preview image section.</summary>
-    public PreviewSection Preview { get; } = new();
+    public PreviewSection Preview { get; }
     /// <summary>The custom materials section.</summary>
-    public MaterialsSection Materials { get; private set; } = new();
+    public MaterialsSection Materials { get; private set; }
     /// <summary>The storage category used to resolve <see cref="Path"/>.</summary>
     public StoredMode Mode = StoredMode.Created;
     /// <summary>The level identifier used as the file name.</summary>
@@ -50,6 +50,15 @@ public sealed partial class Level() : IDisposable
     public Group Root { get => ObjectsSection.Root; set => ObjectsSection.Root = value ?? new(); }
     /// <summary>The level editor settings.</summary>
     public SettingsDefinition Settings { get => SettingsSection.Settings; set => SettingsSection.Settings = value ?? new(); }
+
+    public Level()
+    {
+        Metadata = Attach(new MetadataSection());
+        SettingsSection = Attach(new SettingsSection());
+        ObjectsSection = Attach(new ObjectsSection());
+        Preview = Attach(new PreviewSection());
+        Materials = Attach(new MaterialsSection());
+    }
 
     /// <summary>Opens a level file and reads its header, metadata, and preview.</summary>
     /// <param name="path">The path to the <c>.salmon</c> file.</param>
@@ -238,9 +247,9 @@ public sealed partial class Level() : IDisposable
         SettingsSection.Dispose();
         ObjectsSection.Dispose();
         Materials.Dispose();
-        SettingsSection = new();
-        ObjectsSection = new();
-        Materials = new();
+        SettingsSection = Attach(new SettingsSection());
+        ObjectsSection = Attach(new ObjectsSection());
+        Materials = Attach(new MaterialsSection());
         Loaded = false;
     }
 
@@ -332,7 +341,6 @@ public sealed partial class Level() : IDisposable
     {
         if (section == null || !Sections.TryGetValue(kind, out var header))
             return;
-        section.Level = this;
         try
         {
             section.Read(Reader, header, Version);
@@ -341,6 +349,12 @@ public sealed partial class Level() : IDisposable
         {
             Debug.LogException(exception);
         }
+    }
+
+    private T Attach<T>(T section) where T : LevelSection
+    {
+        section.Level = this;
+        return section;
     }
 
     private enum SectionKind : byte

@@ -1,5 +1,4 @@
 using System.IO.Compression;
-using CompressionLevel = System.IO.Compression.CompressionLevel;
 namespace Salmon.Levels;
 
 /// <summary>Locates a compressed level section within a Salmon file.</summary>
