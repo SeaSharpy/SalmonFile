@@ -190,6 +190,14 @@ public partial class Wall : ScaledObjectDefinition
     /// <summary>The objects triggered when the wall breaks.</summary>
     [InspectorField("On Break", Order = 8)]
     public ObjectReferences Trigger = new();
+
+    /// <summary>The objects triggered when the player touches the wall.</summary>
+    [InspectorField("On Touch", Order = 9)]
+    public ObjectReferences OnTouch = new();
+
+    /// <summary>The minimum time in seconds between touch activations.</summary>
+    [InspectorField("Touch Cooldown", Order = 10, Min = 0f, Max = 999f)]
+    public float TouchCooldown = 0f;
 }
 /// <summary>Defines a point light.</summary>
 

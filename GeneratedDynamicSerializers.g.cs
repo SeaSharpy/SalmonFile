@@ -2255,7 +2255,7 @@ internal static class GeneratedDynamicSerializers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void WriteSalmon_Levels_Wall(Wall value, BinaryWriter writer)
     {
-        writer.Write(12u);
+        writer.Write(14u);
 
         WriteStringField(writer, -999.0f, value.Name);
 
@@ -2280,6 +2280,10 @@ internal static class GeneratedDynamicSerializers
         WriteSingleField(writer, 6.0f, Clamp(value.BreakVelocity, -1.0f, 999.0f));
 
         WriteObjectReferencesField(writer, 8.0f, value.Trigger);
+
+        WriteObjectReferencesField(writer, 9.0f, value.OnTouch);
+
+        WriteSingleField(writer, 10.0f, Clamp(value.TouchCooldown, -1.0f, 999.0f));
 
         writer.Write(false);
     }
@@ -2336,6 +2340,12 @@ internal static class GeneratedDynamicSerializers
                     break;
                 case 8.0f:
                     value.Trigger = ReadSalmon_Levels_ObjectReferences(reader);
+                    break;
+                case 9.0f:
+                    value.OnTouch = ReadSalmon_Levels_ObjectReferences(reader);
+                    break;
+                case 10.0f:
+                    value.TouchCooldown = Clamp(reader.ReadSingle(), -1.0f, 999.0f);
                     break;
                 default:
                     handled = false;
