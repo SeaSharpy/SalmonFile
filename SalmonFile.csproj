@@ -4,8 +4,20 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>disable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageLicenseExpression>CC-BY-NC-SA-4.0</PackageLicenseExpression>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>SalmonFile</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>SeaSharpy</Authors>
+    <Description>The .salmon file format library for SALMON levels.</Description>
+    <PackageTags>salmon level file format serialization</PackageTags>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Copyright>Copyright (c) 2026 SeaSharpy</Copyright>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE.md" Pack="true" PackagePath="\" />
+    <None Update="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
 </Project>

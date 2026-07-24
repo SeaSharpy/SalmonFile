@@ -7,5 +7,7 @@ _site/
 toc.yml
 docfx.json
 BuildDocs.ps1
+PublishNuGet.ps1
 index.md
 styles/
+artifacts/
