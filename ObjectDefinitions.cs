@@ -83,7 +83,7 @@ public abstract partial class ScaledObjectDefinition : ObjectDefinition
 public abstract partial class UniformScaledObjectDefinition : ObjectDefinition
 {
     /// <summary>The uniform local scale.</summary>
-    [InspectorField("Scale", Order = 2, Min = 0.05f)]
+    [InspectorField("Scale", Order = 2, Min = 0.05f, Handle = InspectorHandleType.Scale)]
     public float Scale = 1f;
 }
 
@@ -168,6 +168,10 @@ public partial class Wall : ScaledObjectDefinition
     [InspectorField("Material", Order = 3, Options = "Materials")]
     public string Material = "Brick";
 
+    /// <summary>Whether the material will be kept stable for rotation and movement or stable in world space.</summary>
+    [InspectorField("Stable Material", Order = 3.5f)]
+    public bool StableMaterial = false;
+
     /// <summary>The velocity multiplier applied on contact.</summary>
     [InspectorField("Damp", Order = 4, Min = 0f, Max = 1f, Slider = true)]
     public float Damp = 1f;
@@ -232,7 +236,7 @@ public sealed partial class MagnetFieldObjectDefinition : ScaledObjectDefinition
 {
 
     /// <summary>The magnetic force strength.</summary>
-    [InspectorField("Strength", Order = 3, Min = 0f, Max = 999f)]
+    [InspectorField("Strength", Order = 3, Min = -999f, Max = 999f)]
     public float Strength = 25f;
 }
 

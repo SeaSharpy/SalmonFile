@@ -1217,7 +1217,7 @@ internal static class GeneratedDynamicSerializers
 
         WriteVector3Field(writer, 2.0f, Clamp(value.Scale, 0.05f, float.NaN));
 
-        WriteSingleField(writer, 3.0f, Clamp(value.Strength, 0.0f, 999.0f));
+        WriteSingleField(writer, 3.0f, Clamp(value.Strength, -999.0f, 999.0f));
 
         writer.Write(false);
     }
@@ -1252,7 +1252,7 @@ internal static class GeneratedDynamicSerializers
                     value.Scale = Clamp(new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()), 0.05f, float.NaN);
                     break;
                 case 3.0f:
-                    value.Strength = Clamp(reader.ReadSingle(), 0.0f, 999.0f);
+                    value.Strength = Clamp(reader.ReadSingle(), -999.0f, 999.0f);
                     break;
                 default:
                     handled = false;
@@ -2255,7 +2255,7 @@ internal static class GeneratedDynamicSerializers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void WriteSalmon_Levels_Wall(Wall value, BinaryWriter writer)
     {
-        writer.Write(14u);
+        writer.Write(15u);
 
         WriteStringField(writer, -999.0f, value.Name);
 
@@ -2271,6 +2271,8 @@ internal static class GeneratedDynamicSerializers
 
         WriteStringField(writer, 3.0f, value.Material);
 
+        WriteBooleanField(writer, 3.5f, value.StableMaterial);
+
         WriteSingleField(writer, 4.0f, Clamp(value.Damp, 0.0f, 1.0f));
 
         WriteByteField(writer, 5.0f, (byte)value.Mode);
@@ -2283,7 +2285,7 @@ internal static class GeneratedDynamicSerializers
 
         WriteObjectReferencesField(writer, 9.0f, value.OnTouch);
 
-        WriteSingleField(writer, 10.0f, Clamp(value.TouchCooldown, -1.0f, 999.0f));
+        WriteSingleField(writer, 10.0f, Clamp(value.TouchCooldown, 0.0f, 999.0f));
 
         writer.Write(false);
     }
@@ -2323,6 +2325,9 @@ internal static class GeneratedDynamicSerializers
                 case 3.0f:
                     value.Material = reader.ReadString();
                     break;
+                case 3.5f:
+                    value.StableMaterial = reader.ReadBoolean();
+                    break;
                 case 4.0f:
                     value.Damp = Clamp(reader.ReadSingle(), 0.0f, 1.0f);
                     break;
@@ -2345,7 +2350,7 @@ internal static class GeneratedDynamicSerializers
                     value.OnTouch = ReadSalmon_Levels_ObjectReferences(reader);
                     break;
                 case 10.0f:
-                    value.TouchCooldown = Clamp(reader.ReadSingle(), -1.0f, 999.0f);
+                    value.TouchCooldown = Clamp(reader.ReadSingle(), 0.0f, 999.0f);
                     break;
                 default:
                     handled = false;
