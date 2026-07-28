@@ -163,6 +163,26 @@ internal static class TypeCache
                 dynamicFields.Add(new DynamicInspectorField(attribute.Order, field.FieldType, attribute, field.GetValue, field.SetValue));
             }
         }
+        var properties = type.GetProperties(
+            BindingFlags.Instance |
+            BindingFlags.Public |
+            BindingFlags.NonPublic
+        );
+        foreach (var property in properties)
+        {
+            var attribute = property.GetCustomAttribute<InspectorFieldAttribute>();
+            if (attribute == null || property.GetIndexParameters().Length != 0 || !property.CanRead || !property.CanWrite)
+                continue;
+            if (!float.IsNaN(attribute.Min) || !float.IsNaN(attribute.Max))
+            {
+                dynamicFields.Add(new DynamicInspectorField(attribute.Order, property.PropertyType, attribute,
+                    obj => ClampNumber(property.GetValue(obj), property.PropertyType, attribute.Min, attribute.Max),
+                    (obj, value) => property.SetValue(obj, ClampNumber(value, property.PropertyType, attribute.Min, attribute.Max))
+                ));
+            }
+            else
+                dynamicFields.Add(new DynamicInspectorField(attribute.Order, property.PropertyType, attribute, property.GetValue, property.SetValue));
+        }
         var methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public);
         foreach (var method in methods)
         {

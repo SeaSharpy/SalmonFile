@@ -59,30 +59,14 @@ public sealed partial class MaterialsSection : LevelSection
     {
         foreach (var customMaterial in CustomMaterials)
         {
-            if (Version < 21)
-                for (var i = 0; i < CustomMaterialSize * CustomMaterialSize; i++)
-                {
-                    customMaterial.Texture[i * 4 + 0] = reader.ReadByte();
-                    customMaterial.Texture[i * 4 + 1] = reader.ReadByte();
-                    customMaterial.Texture[i * 4 + 2] = reader.ReadByte();
-                    customMaterial.Texture[i * 4 + 3] = byte.MaxValue;
-                }
-            else
-                Buffer.BlockCopy(
-                    reader.ReadBytes(CustomMaterialByteCount),
-                    0,
-                    customMaterial.Texture,
-                    0,
-                    CustomMaterialByteCount
-                );
+            Buffer.BlockCopy(
+                reader.ReadBytes(CustomMaterialByteCount),
+                0,
+                customMaterial.Texture,
+                0,
+                CustomMaterialByteCount
+            );
             DynamicSerializer.Deserialize(typeof(CustomMaterialDefinition), customMaterial, reader);
-            if (Version < 21)
-                customMaterial.BlendAmount = customMaterial._BlendAmount switch
-                {
-                    0 => 0.25f,
-                    1 => 0.5f,
-                    _ => 1f,
-                };
         }
     }
 

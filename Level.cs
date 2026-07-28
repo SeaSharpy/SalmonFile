@@ -14,8 +14,8 @@ public enum StoredMode : byte
 /// <summary>Represents a versioned <c>.salmon</c> level and its lazily loaded sections.</summary>
 public sealed partial class Level : IDisposable
 {
-    private const int CurrentVersion = 21;
-    private const int MinVersion = 7;
+    private const int CurrentVersion = 22;
+    private const int MinVersion = 21;
     private const string Magic = "SALMONLEVEL";
     private readonly Dictionary<SectionKind, SectionHeader> Sections = [];
     /// <summary>The open stream backing this level, or <see langword="null"/> for a new level.</summary>

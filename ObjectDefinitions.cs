@@ -1,7 +1,7 @@
 namespace Salmon.Levels;
 
-/// <summary>Provides identity and transform data shared by every level object.</summary>
-public abstract partial class ObjectDefinition
+/// <summary>Provides identity data used by every level object.</summary>
+public abstract class ObjectDefinition
 {
     /// <summary>The object name, unique within its parent group.</summary>
     [InspectorField("Name", Order = -999)]
@@ -9,8 +9,13 @@ public abstract partial class ObjectDefinition
 
     /// <summary>The persistent object identifier.</summary>
     [InspectorField(label: "ID", Order = -1, ReadOnly = true, NoInspect = true)]
-    public ulong ID = Snowflake.CreateULong();
+    public ulong ID { get; internal set; } = Snowflake.CreateULong();
+}
 
+
+/// <summary>Adds local position, rotation and visuals to a level object.</summary>
+public abstract partial class PhysicalObjectDefinition : ObjectDefinition
+{
     /// <summary>The local position.</summary>
     [InspectorField("Position", Order = 0, Handle = InspectorHandleType.Move)]
     public Vector3 Position = Vector3.zero;
@@ -23,8 +28,11 @@ public abstract partial class ObjectDefinition
 /// <summary>Stores a set of persistent level object identifiers.</summary>
 public sealed partial class ObjectReferences : ISpecialSerializable
 {
-    /// <summary>The referenced object identifiers.</summary>
-    public HashSet<ulong> IDs = new(8);
+    /// <summary>
+    /// The referenced object identifiers. 
+    /// More than 8 will cause strange UI glitches and more than 255 will not save correctly. 
+    /// </summary>
+    public readonly HashSet<ulong> IDs = new(8);
     internal static string GetDisplayPath(ulong id, Group root)
     {
         if (root.ID == id)
@@ -72,7 +80,7 @@ public sealed partial class ObjectReferences : ISpecialSerializable
 }
 
 /// <summary>Adds non-uniform local scale to a level object.</summary>
-public abstract partial class ScaledObjectDefinition : ObjectDefinition
+public abstract partial class ScaledObjectDefinition : PhysicalObjectDefinition
 {
     /// <summary>The local scale on each axis.</summary>
     [InspectorField("Scale", Order = 2, Min = 0.05f, Handle = InspectorHandleType.Scale)]
@@ -80,7 +88,7 @@ public abstract partial class ScaledObjectDefinition : ObjectDefinition
 }
 
 /// <summary>Adds uniform local scale to a level object.</summary>
-public abstract partial class UniformScaledObjectDefinition : ObjectDefinition
+public abstract partial class UniformScaledObjectDefinition : PhysicalObjectDefinition
 {
     /// <summary>The uniform local scale.</summary>
     [InspectorField("Scale", Order = 2, Min = 0.05f, Handle = InspectorHandleType.Scale)]
@@ -188,9 +196,6 @@ public partial class Wall : ScaledObjectDefinition
     [InspectorField("Break Velocity", Order = 6, Min = -1f, Max = 999f)]
     public float BreakVelocity = -1f;
 
-    [InspectorField("On Break", Order = 7, Old = true)]
-    internal string TriggerID = "";
-
     /// <summary>The objects triggered when the wall breaks.</summary>
     [InspectorField("On Break", Order = 8)]
     public ObjectReferences Trigger = new();
@@ -206,7 +211,7 @@ public partial class Wall : ScaledObjectDefinition
 /// <summary>Defines a point light.</summary>
 
 [ObjectType("Light")]
-public sealed partial class LightObjectDefinition : ObjectDefinition
+public sealed partial class LightObjectDefinition : PhysicalObjectDefinition
 {
     /// <summary>The light red channel in the range 0 to 1.</summary>
     [InspectorField("R", Order = 3, Min = 0f, Max = 1f, Slider = true)]
@@ -285,10 +290,6 @@ public sealed partial class CheckpointObjectDefinition : UniformScaledObjectDefi
     /// <summary>Whether reaching the checkpoint plays a sound.</summary>
     [InspectorField("Audible", Order = 4.5f)]
     public bool Audible = true;
-
-    [InspectorField("On Hit", Order = 5, Old = true)]
-    internal string TriggerID = "";
-
     /// <summary>The objects triggered when the checkpoint is reached.</summary>
     [InspectorField("On Hit", Order = 6)]
     public ObjectReferences Trigger = new();
@@ -306,10 +307,6 @@ public sealed partial class WinObjectDefinition : UniformScaledObjectDefinition
     /// <summary>Whether reaching the win target plays a sound.</summary>
     [InspectorField("Audible", Order = 3.5f)]
     public bool Audible = true;
-
-
-    [InspectorField("On Win", Order = 4, Old = true)]
-    internal string TriggerID = "";
 
     /// <summary>The objects triggered when the level is completed.</summary>
     [InspectorField("On Win", Order = 4)]
@@ -345,12 +342,14 @@ public sealed partial class TextObjectDefinition : ScaledObjectDefinition
     /// <summary>The displayed text.</summary>
     [InspectorField("Text", Order = 5, Multiline = true)]
     public string Text = "Text";
+    [InspectorField("Counter ID", Order = 6, NoInspect = true)]
+    public int CounterID = -1;
 }
 
 /// <summary>Defines a spherical magnetic force point.</summary>
 
 [ObjectType("Magnet Point")]
-public sealed partial class MagnetPointObjectDefinition : ObjectDefinition
+public sealed partial class MagnetPointObjectDefinition : PhysicalObjectDefinition
 {
     /// <summary>The magnetic force strength; negative values repel.</summary>
     [InspectorField("Strength", Order = 3, Min = -999f, Max = 999f)]
@@ -488,11 +487,8 @@ public enum EasingDirection
 /// <summary>Moves referenced objects when triggered.</summary>
 
 [ObjectType("Move Trigger")]
-public sealed partial class MoveTriggerObjectDefinition : ObjectDefinition
+public sealed partial class MoveTriggerObjectDefinition : PhysicalObjectDefinition
 {
-    [InspectorField("Move", Order = 3, Old = true)]
-    internal string MoveID = "";
-
     /// <summary>The object to move.</summary>
     [InspectorField("Move", Order = 3.5f)]
     public ObjectReferences Move = new();
@@ -513,9 +509,6 @@ public sealed partial class MoveTriggerObjectDefinition : ObjectDefinition
     [InspectorField("Easing Direction", Order = 5.6f)]
     public EasingDirection EasingDirection = EasingDirection.In;
 
-    [InspectorField("On Done", Order = 6, Old = true)]
-    internal string TriggerID = "";
-
     /// <summary>The objects triggered when movement finishes.</summary>
     [InspectorField("On Done", Order = 7)]
     public ObjectReferences Trigger = new();
@@ -524,10 +517,8 @@ public sealed partial class MoveTriggerObjectDefinition : ObjectDefinition
 /// <summary>Rotates referenced objects when triggered.</summary>
 
 [ObjectType("Rotation Trigger")]
-public sealed partial class RotationTriggerObjectDefinition : ObjectDefinition
+public sealed partial class RotationTriggerObjectDefinition : PhysicalObjectDefinition
 {
-    [InspectorField("Rotate", Order = 3, Old = true)]
-    internal string RotateID = "";
     /// <summary>The object to rotate.</summary>
     [InspectorField("Rotate", Order = 3.5f)]
     public ObjectReferences Rotate = new();
@@ -548,9 +539,6 @@ public sealed partial class RotationTriggerObjectDefinition : ObjectDefinition
     [InspectorField("Easing Direction", Order = 5.6f)]
     public EasingDirection EasingDirection = EasingDirection.InOut;
 
-    [InspectorField("On Done", Order = 6, Old = true)]
-    internal string TriggerID = "";
-
     /// <summary>The objects triggered when rotation finishes.</summary>
     [InspectorField("On Done", Order = 7)]
     public ObjectReferences Trigger = new();
@@ -559,7 +547,7 @@ public sealed partial class RotationTriggerObjectDefinition : ObjectDefinition
 /// <summary>Teleports the player to this object's position when triggered.</summary>
 
 [ObjectType("Teleport Trigger")]
-public sealed partial class TeleportTriggerObjectDefinition : ObjectDefinition
+public sealed partial class TeleportTriggerObjectDefinition : PhysicalObjectDefinition
 {
     /// <summary>The objects triggered after teleporting.</summary>
     [InspectorField("On Done", Order = 3)]
@@ -616,8 +604,6 @@ public enum FollowTarget : byte
 [ObjectType("Destroy Trigger")]
 public sealed partial class DestroyTriggerObjectDefinition : ObjectDefinition
 {
-    [InspectorField("Destroy", Order = 3, Old = true)]
-    internal string DestroyID = "";
 
     /// <summary>The objects to destroy.</summary>
     [InspectorField("Destroy", Order = 3.5f)]
@@ -634,9 +620,6 @@ public sealed partial class DestroyTriggerObjectDefinition : ObjectDefinition
 public sealed partial class TouchTriggerObjectDefinition : UniformScaledObjectDefinition
 {
 
-    [InspectorField("Trigger", Order = 3, Old = true)]
-    internal string TriggerID = "";
-
     /// <summary>The objects triggered on contact.</summary>
     [InspectorField("Trigger", Order = 3.5f)]
     public ObjectReferences Trigger = new();
@@ -651,9 +634,6 @@ public sealed partial class TouchTriggerObjectDefinition : UniformScaledObjectDe
 [ObjectType("Delay Trigger")]
 public sealed partial class DelayTriggerObjectDefinition : ObjectDefinition
 {
-    [InspectorField("Trigger", Order = 3, Old = true)]
-    internal string TriggerID = "";
-
     /// <summary>The objects triggered after the delay.</summary>
     [InspectorField("Trigger", Order = 3.5f)]
     public ObjectReferences Trigger = new();
@@ -672,15 +652,18 @@ public sealed partial class DelayTriggerObjectDefinition : ObjectDefinition
 [ObjectType("Counter Trigger")]
 public sealed partial class CounterTriggerObjectDefinition : ObjectDefinition
 {
-    /// <summary>The counter name.</summary>
     [InspectorField("Counter", Order = 3)]
-    public string Counter = "";
+    public string Counter;
+    [InspectorField("Counter ID", Order = 4, NoInspect = true)]
+    public int CounterID = -1;
     /// <summary>The arithmetic operation.</summary>
     [InspectorField("Operator", Order = 5)]
     public Operator Operator = Operator.Set;
     /// <summary>The operand, optionally containing a counter expression.</summary>
     [InspectorField("Operand", Order = 6)]
     public string Operand = "1";
+    [InspectorField("Counter IDs", Order = 7, NoInspect = true)]
+    public int[] CounterIDs = [];
 }
 
 /// <summary>Triggers one of two object sets based on a counter comparison.</summary>
@@ -688,23 +671,21 @@ public sealed partial class CounterTriggerObjectDefinition : ObjectDefinition
 [ObjectType("If Trigger")]
 public sealed partial class IfTriggerObjectDefinition : ObjectDefinition
 {
-    /// <summary>The counter name.</summary>
-    [InspectorField("Counter", Order = 3)]
-    public string Counter = "";
 
-    /// <summary>The value compared with the counter.</summary>
-    [InspectorField("Operand", Order = 4)]
-    public int Operand = 1;
+    /// <summary>The counter expression, if != 0 it is true, if == 0 it is false.</summary>
+    [InspectorField("Expression", Order = 3.5f)]
+    public string Expression = "1";
+    [InspectorField("Counter IDs", Order = 4.5f, NoInspect = true)]
+    public int[] CounterIDs = [];
 
-    /// <summary>The comparison operation.</summary>
-    [InspectorField("Comparison", Order = 5)]
-    public Comparison Operator = Comparison.Equal;
+    [InspectorField("Counter", Order = 3, Old = true)]
+    internal string Counter = "";
 
-    [InspectorField("True Trigger", Order = 6, Old = true)]
-    internal string TrueTriggerID = "";
+    [InspectorField("Operand", Order = 4, Old = true)]
+    internal int Operand = 1;
 
-    [InspectorField("False Trigger", Order = 7, Old = true)]
-    internal string FalseTriggerID = "";
+    [InspectorField("Comparison", Order = 5, Old = true)]
+    internal Comparison Operator = Comparison.Equal;
 
     /// <summary>The objects triggered when the comparison succeeds.</summary>
     [InspectorField("True Trigger", Order = 8)]
@@ -724,8 +705,6 @@ public sealed partial class SetMaterialTriggerObjectDefinition : ObjectDefinitio
     [InspectorField("Material", Order = 3, Options = "Materials")]
     public string Material = "Brick";
 
-    [InspectorField("Wall", Order = 4, Old = true)]
-    internal string WallID = "";
 
     /// <summary>The walls whose material is changed.</summary>
     [InspectorField("Wall", Order = 5)]
@@ -759,8 +738,6 @@ public sealed partial class SkyColourTriggerObjectDefinition : ObjectDefinition
 [ObjectType("Toggle Trigger")]
 public sealed partial class ToggleTriggerObjectDefinition : ObjectDefinition
 {
-    [InspectorField("Toggle", Order = 3, Old = true)]
-    internal string ToggleID = "";
 
     /// <summary>The objects whose state is changed.</summary>
     [InspectorField("Toggle", Order = 3.5f)]
@@ -783,9 +760,6 @@ public sealed partial class CoinObjectDefinition : UniformScaledObjectDefinition
     /// <summary>Whether collecting the coin plays a sound.</summary>
     [InspectorField("Audible", Order = 2.6f)]
     public bool Audible = true;
-
-    [InspectorField("On Pickup", Order = 3, Old = true)]
-    internal string OnPickupID = "";
 
     /// <summary>The objects triggered when the coin is collected.</summary>
     [InspectorField("On Pickup", Order = 4)]

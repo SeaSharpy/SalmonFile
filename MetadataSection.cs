@@ -13,13 +13,7 @@ public sealed class MetadataSection : LevelSection, IDisposable
     /// <inheritdoc/>
     public override void Read(BinaryReader reader)
     {
-        if (Version < 20)
-        {
-            reader.ReadString();
-            Title = reader.ReadString();
-            Author = reader.ReadString();
-        }
-        else DynamicSerializer.Deserialize(typeof(MetadataSection), this, reader);
+        DynamicSerializer.Deserialize(typeof(MetadataSection), this, reader);
         Normalize();
     }
 

@@ -11,7 +11,7 @@ public sealed partial class SettingsDefinition
     public bool AutoSave = true;
 
     /// <summary>The translation grid interval.</summary>
-    [InspectorField("Grid Snap", Order = 1, Min = 0.01f, Max = 10f)]
+    [InspectorField("Grid Snap", Order = 1, Min = 0.02f, Max = 10f)]
     public float GridSize = 1f;
 
     /// <summary>The rotation snap interval in degrees.</summary>
@@ -85,13 +85,5 @@ public sealed partial class SettingsDefinition
     [InspectorField("Preview Yaw", Order = 14)]
     public float PreviewYaw = 0f;
 
-    /// <summary>Copies the current editor camera pose to the preview camera pose.</summary>
-    [InspectorButton("Set Preview")]
-    public void Preview()
-    {
-        PreviewPosition = CameraPosition;
-        PreviewPitch = CameraPitch;
-        PreviewYaw = CameraYaw;
-    }
 
 }

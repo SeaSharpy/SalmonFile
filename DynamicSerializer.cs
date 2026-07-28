@@ -187,8 +187,8 @@ public static class DynamicSerializer
             reader.BaseStream.Position = startPosition + length;
         }
     }
-    private static void WriteValue(BinaryWriter writer, DynamicInspectorField field, object value) => WriteValue(writer, field.ValueType, value);
-    private static void WriteValue(BinaryWriter writer, Type type, object value)
+    internal static void WriteValue(BinaryWriter writer, DynamicInspectorField field, object value) => WriteValue(writer, field.ValueType, value);
+    internal static void WriteValue(BinaryWriter writer, Type type, object value)
     {
         if (type == typeof(string))
             writer.Write((string)value);
@@ -210,8 +210,8 @@ public static class DynamicSerializer
         else
             Serialize(value, writer);
     }
-    private static object ReadValue(BinaryReader reader, DynamicInspectorField field) => ReadValue(reader, field.ValueType);
-    private static object ReadValue(BinaryReader reader, Type type)
+    internal static object ReadValue(BinaryReader reader, DynamicInspectorField field) => ReadValue(reader, field.ValueType);
+    internal static object ReadValue(BinaryReader reader, Type type)
     {
         if (type == typeof(string))
             return reader.ReadString();

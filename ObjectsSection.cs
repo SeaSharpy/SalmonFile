@@ -6,157 +6,125 @@ namespace Salmon.Levels;
 public sealed class ObjectsSection : LevelSection
 {
     /// <summary>The root of the level object hierarchy.</summary>
+    [InspectorField("Root", Order = 1)]
     public Group Root = new();
     /// <summary>The identifier of the group currently open in the editor.</summary>
+    [InspectorField("Group ID", Order = 2)]
     public ulong GroupID = 0;
     /// <summary>The identifiers of the objects selected in the editor.</summary>
+    [InspectorField("Selected IDs", Order = 3)]
     public ulong[] SelectedIDs = [];
+    [InspectorField("Counters", Order = 4)]
+    public Dictionary<string, int> Counters = [];
+    public List<string> Errors = [];
+    public List<string> Warnings = [];
+
     /// <inheritdoc/>
     public override void Write(BinaryWriter writer)
     {
-        DynamicSerializer.Serialize(Root, writer);
-        writer.Write(GroupID);
-        writer.Write(SelectedIDs.Length);
-        foreach (var id in SelectedIDs)
-            writer.Write(id);
+        Compile();
+        DynamicSerializer.Serialize(this, writer);
     }
-
+    public void Compile()
+    {
+        Counters.Clear();
+        var counterIndex = 0;
+        var objects = Root.Recurse().ToArray();
+        foreach (var obj in objects)
+            if (obj is CounterTriggerObjectDefinition counterTrigger)
+            {
+                counterTrigger.Counter ??= "";
+                if (!Counters.ContainsKey(counterTrigger.Counter))
+                    Counters[counterTrigger.Counter] = counterIndex++;
+            }
+        Errors.Clear();
+        Warnings.Clear();
+        foreach (var obj in objects)
+            switch (obj)
+            {
+                case TextObjectDefinition text:
+                    text.CounterID = -1;
+                    if (text.Text?.StartsWith("$", StringComparison.Ordinal) == true)
+                        text.CounterID = ResolveCounterID(ObjectReferences.GetDisplayPath(obj.ID, Root), text.Text.Substring(1));
+                    break;
+                case CounterTriggerObjectDefinition counterTrigger:
+                    var counterPath = ObjectReferences.GetDisplayPath(obj.ID, Root);
+                    counterTrigger.CounterID = ResolveCounterID(counterPath, counterTrigger.Counter);
+                    counterTrigger.CounterIDs = CompileExpression(counterPath, counterTrigger.Operand ?? "");
+                    break;
+                case IfTriggerObjectDefinition ifTrigger:
+                    var ifPath = ObjectReferences.GetDisplayPath(obj.ID, Root);
+                    ifTrigger.CounterIDs = CompileExpression(ifPath, ifTrigger.Expression ?? "");
+                    break;
+            }
+    }
+    private int[] CompileExpression(string obj, string expression)
+    {
+        var errorStart = Errors.Count;
+        var warningStart = Warnings.Count;
+        var parser = new ExpressionParser(expression, Counters, Errors, Warnings);
+        parser.Parse();
+        for (var i = errorStart; i < Errors.Count; i++)
+            Errors[i] = $"{obj}: {Errors[i]}";
+        for (var i = warningStart; i < Warnings.Count; i++)
+            Warnings[i] = $"{obj}: {Warnings[i]}";
+        return parser.CounterIDs;
+    }
+    private int ResolveCounterID(string obj, string counter)
+    {
+        if (string.IsNullOrEmpty(counter))
+        {
+            Warnings.Add($"Counter on {obj} is empty.");
+            return Counters.TryGetValue(counter ?? "", out var emptyCounterID) ? emptyCounterID : -1;
+        }
+        for (var i = 0; i < counter.Length; i++)
+            if (!char.IsLetterOrDigit(counter[i]) && counter[i] != '_')
+            {
+                Warnings.Add($"Counter on {obj} contains invalid character '{counter[i]}'.");
+                return Counters.TryGetValue(counter, out var invalidCounterID) ? invalidCounterID : -1;
+            }
+        if (!Counters.TryGetValue(counter, out var counterID))
+        {
+            Warnings.Add($"{obj} references nonexistent counter '{counter}'.");
+            return -1;
+        }
+        return counterID;
+    }
     /// <inheritdoc/>
     public override void Read(BinaryReader reader)
     {
-        Root = (Group)DynamicSerializer.Deserialize(typeof(Group), reader);
-        NormalizeCustomMaterialNames();
-        if (Version >= 20)
+        if (Version < 22)
         {
+            Root = (Group)DynamicSerializer.Deserialize(typeof(Group), reader);
             GroupID = reader.ReadUInt64();
             var count = reader.ReadInt32();
             SelectedIDs = new ulong[count];
             for (var i = 0; i < count; i++)
                 SelectedIDs[i] = reader.ReadUInt64();
         }
-        if (Version < 21)
-        {
-            var idMap = new Dictionary<ulong, ulong>();
-            RegenerateIDs(Root, idMap);
-            if (idMap.TryGetValue(GroupID, out var groupID))
-                GroupID = groupID;
-            for (var i = 0; i < SelectedIDs.Length; i++)
-                if (idMap.TryGetValue(SelectedIDs[i], out var selectedID))
-                    SelectedIDs[i] = selectedID;
-            var parents = new Dictionary<ObjectDefinition, Group>();
-            parents[Root] = null;
+        else DynamicSerializer.Deserialize(typeof(ObjectsSection), this, reader);
+        if (Version < 22)
             foreach (var obj in Root.Recurse())
-                if (obj is Group group)
-                    foreach (var child in group.Objects)
-                        parents[child] = group;
-            foreach (var obj in Root.Recurse())
-            {
-                var dynamicType = TypeCache.Get(obj.GetType());
-                foreach (var stringField in dynamicType.Fields)
+                if (obj is IfTriggerObjectDefinition ifTrigger)
                 {
-                    if (stringField.ValueType != typeof(string))
-                        continue;
-                    foreach (var referenceField in dynamicType.Fields)
+                    var comparison = ifTrigger.Operator switch
                     {
-                        if (referenceField.ValueType != typeof(ObjectReferences) || referenceField.Label != stringField.Label)
-                            continue;
-                        var stringValue = (string)stringField.GetValue(obj);
-                        var value = (ObjectReferences)referenceField.GetValue(obj);
-                        value = ResolveMany(obj, stringValue, parents);
-                        referenceField.SetValue(obj, value);
-                    }
+                        Comparison.Equal => "==",
+                        Comparison.NotEqual => "!=",
+                        Comparison.Greater => ">",
+                        Comparison.Less => "<",
+                        Comparison.GreaterOrEqual => ">=",
+                        _ => "<="
+                    };
+                    ifTrigger.Expression = $"{ifTrigger.Operand} {comparison} ${ifTrigger.Counter}";
                 }
-            }
-
-            static void RegenerateIDs(ObjectDefinition obj, Dictionary<ulong, ulong> idMap)
-            {
-                var oldID = obj.ID;
-                obj.ID = Snowflake.CreateULong();
-                idMap[oldID] = obj.ID;
-                if (obj is not Group group || group.Objects == null)
-                    return;
-                foreach (var child in group.Objects)
-                    if (child != null)
-                        RegenerateIDs(child, idMap);
-            }
-
-            static ObjectReferences ResolveMany(ObjectDefinition source, string manyPaths, Dictionary<ObjectDefinition, Group> parents)
-            {
-                var references = new ObjectReferences();
-                if (source == null || string.IsNullOrWhiteSpace(manyPaths))
-                    return references;
-                var paths = manyPaths.Split(',');
-                foreach (var path in paths)
-                    if (TryResolve(source, path, parents, out var target))
-                        references.IDs.Add(target.ID);
-                return references;
-            }
-
-            static bool TryResolve(ObjectDefinition source, string path, Dictionary<ObjectDefinition, Group> parents, out ObjectDefinition target)
-            {
-                target = null;
-                if (source == null || string.IsNullOrWhiteSpace(path))
-                    return false;
-                if (!parents.TryGetValue(source, out var group))
-                    return false;
-
-                ObjectDefinition selected = null;
-                var parts = path.Split('.');
-                var start = 0;
-                var firstPart = parts[0].Trim();
-                if (firstPart == "$")
-                {
-                    group = parents.Keys.OfType<Group>().FirstOrDefault(group => parents[group] == null);
-                    start = 1;
-                }
-                else if (IsParentPath(firstPart))
-                {
-                    for (var climb = 0; climb < firstPart.Length; climb++)
-                        if (group == null || !parents.TryGetValue(group, out group))
-                            return false;
-                    start = 1;
-                }
-                for (var i = start; i < parts.Length; i++)
-                {
-                    var part = parts[i].Trim();
-                    if (part.Length == 0)
-                        return false;
-                    if (group == null)
-                        return false;
-
-                    selected = FindChild(group, part);
-                    if (selected == null)
-                        return false;
-                    group = selected as Group;
-                }
-
-                target = selected;
-                return target != null;
-            }
-
-            static bool IsParentPath(string part)
-            {
-                if (part.Length == 0)
-                    return false;
-                for (var i = 0; i < part.Length; i++)
-                    if (part[i] != '^')
-                        return false;
-                return true;
-            }
-
-            static ObjectDefinition FindChild(Group group, string name)
-            {
-                if (group.Objects == null)
-                    return null;
-                for (var i = 0; i < group.Objects.Count; i++)
-                {
-                    var child = group.Objects[i];
-                    if (child != null && string.Equals(child.Name, name, StringComparison.OrdinalIgnoreCase))
-                        return child;
-                }
-                return null;
-            }
-        }
+#if UNITY_64
+                else if (obj is TouchTriggerObjectDefinition touchTrigger)
+                    if (LevelEditor.LevelEditor.Instance is LevelEditor.LevelEditor editor)
+                        editor.TopBarManager.Status("Touch triggers are not recommended, you should switch to just using walls");
+#endif
+        if (Version < 22)
+            Compile();
     }
     /// <inheritdoc/>
     public override void Normalize()
@@ -164,31 +132,6 @@ public sealed class ObjectsSection : LevelSection
         EnsureUniqueObjectNames();
     }
 
-    private void NormalizeCustomMaterialNames()
-    {
-        var materialMap = Level.Materials.GetCustomMaterialNameMap();
-        if (materialMap.Count == 0)
-            return;
-        Stack<ObjectDefinition> objects = new();
-        objects.Push(Root);
-        while (objects.Count > 0)
-        {
-            var levelObject = objects.Pop();
-            if (levelObject is Wall wall && materialMap.TryGetValue(wall.Material, out var wallMaterial))
-                wall.Material = wallMaterial;
-            if (levelObject is Wall wall2 && (wall2.Material == "Wood 2" || wall2.Material == "Wood 3"))
-                wall2.Material = "Wood";
-            if (levelObject is SetMaterialTriggerObjectDefinition setMaterial && materialMap.TryGetValue(setMaterial.Material, out var triggerMaterial))
-                setMaterial.Material = triggerMaterial;
-            if (levelObject is SetMaterialTriggerObjectDefinition setMaterial2 && (setMaterial2.Material == "Wood 2" || setMaterial2.Material == "Wood 3"))
-                setMaterial2.Material = "Wood";
-            if (levelObject is not Group group || group.Objects == null)
-                continue;
-            foreach (var child in group.Objects)
-                if (child != null)
-                    objects.Push(child);
-        }
-    }
     /// <summary>Ensures every group contains non-empty, case-insensitively unique child names.</summary>
     public void EnsureUniqueObjectNames()
     {
