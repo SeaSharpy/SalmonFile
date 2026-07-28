@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Salmon.Levels;
+using Salmon.Levels.Enums;
 
 namespace Salmon;
 
@@ -660,7 +661,7 @@ internal static partial class GeneratedDynamicSerializers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void WriteSalmon_Levels_IfTriggerObjectDefinition(IfTriggerObjectDefinition value, BinaryWriter writer)
     {
-        writer.Write(7u);
+        writer.Write(6u);
 
         WriteStringField(writer, 3.5f, value.Expression);
 
@@ -673,8 +674,6 @@ internal static partial class GeneratedDynamicSerializers
         writer.BaseStream.Position = lengthPosition1;
         writer.Write(checked((uint)(valueEnd1 - valueStart1)));
         writer.BaseStream.Position = valueEnd1;
-
-        WriteStringField(writer, 3.0f, value.Counter);
 
         WriteObjectReferencesField(writer, 8.0f, value.TrueTrigger);
 
@@ -1311,7 +1310,7 @@ internal static partial class GeneratedDynamicSerializers
 
         WriteBooleanField(writer, -1.0f, value.AutoSave);
 
-        WriteSingleField(writer, 1.0f, Clamp(value.GridSize, 0.01f, 10.0f));
+        WriteSingleField(writer, 1.0f, Clamp(value.GridSize, 0.02f, 10.0f));
 
         WriteSingleField(writer, 2.0f, Clamp(value.RotationSnapDegrees, 1.0f, 90.0f));
 
@@ -1371,7 +1370,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.AutoSave = reader.ReadBoolean();
                     break;
                 case 1.0f:
-                    value.GridSize = Clamp(reader.ReadSingle(), 0.01f, 10.0f);
+                    value.GridSize = Clamp(reader.ReadSingle(), 0.02f, 10.0f);
                     break;
                 case 2.0f:
                     value.RotationSnapDegrees = Clamp(reader.ReadSingle(), 1.0f, 90.0f);

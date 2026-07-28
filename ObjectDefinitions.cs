@@ -1,4 +1,5 @@
-namespace Salmon.Levels;
+namespace Salmon.Levels
+{
 
 /// <summary>Provides identity data used by every level object.</summary>
 public abstract class ObjectDefinition
@@ -98,6 +99,8 @@ public abstract partial class UniformScaledObjectDefinition : PhysicalObjectDefi
 
 /// <summary>Controls whether a wall renders visuals, collision, or both.</summary>
 
+namespace Enums
+{
 public enum WallMode : byte
 {
     /// <summary>The wall renders and collides.</summary>
@@ -111,6 +114,7 @@ public enum WallMode : byte
 
 /// <summary>Contains an ordered collection of child level objects.</summary>
 
+}
 [ObjectType("Group")]
 public sealed partial class Group : UniformScaledObjectDefinition, ISpecialSerializable
 {
@@ -246,6 +250,8 @@ public sealed partial class MagnetFieldObjectDefinition : ScaledObjectDefinition
 }
 
 /// <summary>Identifies one of the four horizontal cardinal directions.</summary>
+namespace Enums
+{
 public enum CardinalDirection : byte
 {
     /// <summary>Negative Z.</summary>
@@ -276,6 +282,7 @@ internal static class CardinalDirectionExtensions
 
 /// <summary>Defines a checkpoint.</summary>
 
+}
 [ObjectType("Checkpoint")]
 public sealed partial class CheckpointObjectDefinition : UniformScaledObjectDefinition
 {
@@ -343,7 +350,7 @@ public sealed partial class TextObjectDefinition : ScaledObjectDefinition
     [InspectorField("Text", Order = 5, Multiline = true)]
     public string Text = "Text";
     [InspectorField("Counter ID", Order = 6, NoInspect = true)]
-    public int CounterID = -1;
+    internal int CounterID = -1;
 }
 
 /// <summary>Defines a spherical magnetic force point.</summary>
@@ -363,6 +370,8 @@ public sealed partial class MagnetPointObjectDefinition : PhysicalObjectDefiniti
 
 /// <summary>Specifies an arithmetic counter operation.</summary>
 
+namespace Enums
+{
 public enum Operator : byte
 {
     /// <summary>Adds the operand.</summary>
@@ -379,32 +388,30 @@ public enum Operator : byte
 
 
 
-/// <summary>Specifies a counter comparison.</summary>
-
-public enum Comparison : byte
+}
+namespace Enums
 {
-    /// <summary>Values are equal.</summary>
+internal enum Comparison : byte
+{
     [InspectorName("Equal To")]
     Equal,
-    /// <summary>Values are not equal.</summary>
     [InspectorName("Not Equal To")]
     NotEqual,
-    /// <summary>The counter is greater than the operand.</summary>
     [InspectorName("Greater Than")]
     Greater,
-    /// <summary>The counter is less than the operand.</summary>
     [InspectorName("Less Than")]
     Less,
-    /// <summary>The counter is greater than or equal to the operand.</summary>
     [InspectorName("Greater Than Or Equal To")]
     GreaterOrEqual,
-    /// <summary>The counter is less than or equal to the operand.</summary>
     [InspectorName("Less Than Or Equal To")]
     LessOrEqual
 }
 
 /// <summary>Specifies a visibility or activation change.</summary>
 
+}
+namespace Enums
+{
 public enum ToggleMode : byte
 {
     /// <summary>Enables the target.</summary>
@@ -417,6 +424,9 @@ public enum ToggleMode : byte
 
 /// <summary>Specifies how a move or rotation trigger interprets its speed.</summary>
 
+}
+namespace Enums
+{
 public enum TriggerSpeedMode : byte
 {
     /// <summary>The speed is measured in world units per second.</summary>
@@ -429,6 +439,9 @@ public enum TriggerSpeedMode : byte
 
 
 /// <summary>Identifies the easing curve family used by move and rotation triggers.</summary>
+}
+namespace Enums
+{
 public enum EasingType
 {
     /// <summary>Linear interpolation.</summary>
@@ -469,6 +482,9 @@ public enum EasingType
 }
 
 /// <summary>Specifies which end of an easing curve is accelerated.</summary>
+}
+namespace Enums
+{
 public enum EasingDirection
 {
     /// <summary>Accelerates at the start.</summary>
@@ -486,6 +502,7 @@ public enum EasingDirection
 
 /// <summary>Moves referenced objects when triggered.</summary>
 
+}
 [ObjectType("Move Trigger")]
 public sealed partial class MoveTriggerObjectDefinition : PhysicalObjectDefinition
 {
@@ -591,6 +608,8 @@ public sealed partial class FollowTriggerObjectDefinition : ObjectDefinition
 }
 
 /// <summary>Identifies a follow trigger's target transform.</summary>
+namespace Enums
+{
 public enum FollowTarget : byte
 {
     /// <summary>The gameplay camera (includes rotation).</summary>
@@ -601,6 +620,7 @@ public enum FollowTarget : byte
 
 /// <summary>Destroys referenced objects when triggered.</summary>
 
+}
 [ObjectType("Destroy Trigger")]
 public sealed partial class DestroyTriggerObjectDefinition : ObjectDefinition
 {
@@ -655,7 +675,7 @@ public sealed partial class CounterTriggerObjectDefinition : ObjectDefinition
     [InspectorField("Counter", Order = 3)]
     public string Counter;
     [InspectorField("Counter ID", Order = 4, NoInspect = true)]
-    public int CounterID = -1;
+    internal int CounterID = -1;
     /// <summary>The arithmetic operation.</summary>
     [InspectorField("Operator", Order = 5)]
     public Operator Operator = Operator.Set;
@@ -666,7 +686,7 @@ public sealed partial class CounterTriggerObjectDefinition : ObjectDefinition
     public int[] CounterIDs = [];
 }
 
-/// <summary>Triggers one of two object sets based on a counter comparison.</summary>
+/// <summary>Triggers one of two object sets based on an expression.</summary>
 
 [ObjectType("If Trigger")]
 public sealed partial class IfTriggerObjectDefinition : ObjectDefinition
@@ -764,4 +784,5 @@ public sealed partial class CoinObjectDefinition : UniformScaledObjectDefinition
     /// <summary>The objects triggered when the coin is collected.</summary>
     [InspectorField("On Pickup", Order = 4)]
     public ObjectReferences OnPickup = new();
+}
 }
