@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Salmon.Levels;
+namespace Salmon.Levels.Objects;
 
 /// <summary>Associates a serialized level object type with its stable display name.</summary>
 [AttributeUsage(AttributeTargets.Class)]

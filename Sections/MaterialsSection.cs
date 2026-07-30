@@ -1,4 +1,4 @@
-namespace Salmon.Levels;
+namespace Salmon.Levels.Sections;
 
 
 /// <summary>Defines a custom RGBA material embedded in a level.</summary>

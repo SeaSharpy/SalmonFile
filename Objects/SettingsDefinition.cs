@@ -1,4 +1,4 @@
-namespace Salmon.Levels;
+namespace Salmon.Levels.Objects;
 
 /// <summary>Stores editor, environment, and preview settings embedded in a level.</summary>
 public sealed partial class SettingsDefinition
@@ -84,6 +84,5 @@ public sealed partial class SettingsDefinition
     /// <summary>The preview camera yaw in degrees.</summary>
     [InspectorField("Preview Yaw", Order = 14)]
     public float PreviewYaw = 0f;
-
 
 }

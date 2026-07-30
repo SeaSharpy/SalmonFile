@@ -1,16 +1,5 @@
 namespace Salmon.Levels;
 
-/// <summary>Identifies the storage category containing a level.</summary>
-public enum StoredMode : byte
-{
-    /// <summary>A level created or edited locally.</summary>
-    Created,
-    /// <summary>A level downloaded from the online browser.</summary>
-    Downloaded,
-    /// <summary>A built-in main level.</summary>
-    Main,
-}
-
 /// <summary>Represents a versioned <c>.salmon</c> level and its lazily loaded sections.</summary>
 public sealed partial class Level : IDisposable
 {
@@ -51,6 +40,7 @@ public sealed partial class Level : IDisposable
     /// <summary>The level editor settings.</summary>
     public SettingsDefinition Settings { get => SettingsSection.Settings; set => SettingsSection.Settings = value ?? new(); }
 
+    /// <summary>Create a new level.</summary>
     public Level()
     {
         Metadata = Attach(new MetadataSection());

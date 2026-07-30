@@ -1,4 +1,4 @@
-namespace Salmon.Levels;
+namespace Salmon.Levels.Sections;
 
 /// <summary>Stores searchable level metadata loaded before the full level payload.</summary>
 public sealed class MetadataSection : LevelSection, IDisposable

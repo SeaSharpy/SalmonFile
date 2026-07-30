@@ -1,5 +1,5 @@
 using System.IO.Compression;
-namespace Salmon.Levels;
+namespace Salmon.Levels.Sections;
 
 /// <summary>Locates a compressed level section within a Salmon file.</summary>
 /// <param name="offset">The byte offset from the start of the file.</param>

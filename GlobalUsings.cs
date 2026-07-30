@@ -1,6 +1,8 @@
 global using Salmon;
 global using Salmon.Levels;
 global using Salmon.Levels.Enums;
+global using Salmon.Levels.Objects;
+global using Salmon.Levels.Sections;
 global using System;
 global using System.Collections;
 global using System.Collections.Generic;

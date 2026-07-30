@@ -4,6 +4,8 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using Salmon.Levels;
 using Salmon.Levels.Enums;
+using Salmon.Levels.Objects;
+using Salmon.Levels.Sections;
 
 namespace Salmon;
 
@@ -11,34 +13,34 @@ internal static partial class GeneratedDynamicSerializers
 {
     static GeneratedDynamicSerializers()
     {
-        Register(typeof(CheckpointObjectDefinition), static (value, writer) => WriteSalmon_Levels_CheckpointObjectDefinition((CheckpointObjectDefinition)value, writer), static reader => ReadSalmon_Levels_CheckpointObjectDefinition(reader));
-        Register(typeof(CoinObjectDefinition), static (value, writer) => WriteSalmon_Levels_CoinObjectDefinition((CoinObjectDefinition)value, writer), static reader => ReadSalmon_Levels_CoinObjectDefinition(reader));
-        Register(typeof(CounterTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_CounterTriggerObjectDefinition((CounterTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_CounterTriggerObjectDefinition(reader));
-        Register(typeof(DeathTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_DeathTriggerObjectDefinition((DeathTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_DeathTriggerObjectDefinition(reader));
-        Register(typeof(DelayTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_DelayTriggerObjectDefinition((DelayTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_DelayTriggerObjectDefinition(reader));
-        Register(typeof(DestroyTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_DestroyTriggerObjectDefinition((DestroyTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_DestroyTriggerObjectDefinition(reader));
-        Register(typeof(FollowTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_FollowTriggerObjectDefinition((FollowTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_FollowTriggerObjectDefinition(reader));
-        Register(typeof(Group), static (value, writer) => WriteSalmon_Levels_Group((Group)value, writer), static reader => ReadSalmon_Levels_Group(reader));
-        Register(typeof(IfTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_IfTriggerObjectDefinition((IfTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_IfTriggerObjectDefinition(reader));
-        Register(typeof(LightObjectDefinition), static (value, writer) => WriteSalmon_Levels_LightObjectDefinition((LightObjectDefinition)value, writer), static reader => ReadSalmon_Levels_LightObjectDefinition(reader));
-        Register(typeof(MagnetFieldObjectDefinition), static (value, writer) => WriteSalmon_Levels_MagnetFieldObjectDefinition((MagnetFieldObjectDefinition)value, writer), static reader => ReadSalmon_Levels_MagnetFieldObjectDefinition(reader));
-        Register(typeof(MagnetPointObjectDefinition), static (value, writer) => WriteSalmon_Levels_MagnetPointObjectDefinition((MagnetPointObjectDefinition)value, writer), static reader => ReadSalmon_Levels_MagnetPointObjectDefinition(reader));
-        Register(typeof(MoveTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_MoveTriggerObjectDefinition((MoveTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_MoveTriggerObjectDefinition(reader));
-        Register(typeof(ObjectReferences), static (value, writer) => WriteSalmon_Levels_ObjectReferences((ObjectReferences)value, writer), static reader => ReadSalmon_Levels_ObjectReferences(reader));
-        Register(typeof(RotationTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_RotationTriggerObjectDefinition((RotationTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_RotationTriggerObjectDefinition(reader));
-        Register(typeof(SetMaterialTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_SetMaterialTriggerObjectDefinition((SetMaterialTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_SetMaterialTriggerObjectDefinition(reader));
-        Register(typeof(SettingsDefinition), static (value, writer) => WriteSalmon_Levels_SettingsDefinition((SettingsDefinition)value, writer), static reader => ReadSalmon_Levels_SettingsDefinition(reader));
-        Register(typeof(SkyColourTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_SkyColourTriggerObjectDefinition((SkyColourTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_SkyColourTriggerObjectDefinition(reader));
-        Register(typeof(TeleportTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_TeleportTriggerObjectDefinition((TeleportTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_TeleportTriggerObjectDefinition(reader));
-        Register(typeof(TextObjectDefinition), static (value, writer) => WriteSalmon_Levels_TextObjectDefinition((TextObjectDefinition)value, writer), static reader => ReadSalmon_Levels_TextObjectDefinition(reader));
-        Register(typeof(ToggleTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_ToggleTriggerObjectDefinition((ToggleTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_ToggleTriggerObjectDefinition(reader));
-        Register(typeof(TouchTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_TouchTriggerObjectDefinition((TouchTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_TouchTriggerObjectDefinition(reader));
-        Register(typeof(Wall), static (value, writer) => WriteSalmon_Levels_Wall((Wall)value, writer), static reader => ReadSalmon_Levels_Wall(reader));
-        Register(typeof(WinObjectDefinition), static (value, writer) => WriteSalmon_Levels_WinObjectDefinition((WinObjectDefinition)value, writer), static reader => ReadSalmon_Levels_WinObjectDefinition(reader));
+        Register(typeof(CheckpointObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_CheckpointObjectDefinition((CheckpointObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_CheckpointObjectDefinition(reader));
+        Register(typeof(CoinObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_CoinObjectDefinition((CoinObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_CoinObjectDefinition(reader));
+        Register(typeof(CounterTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_CounterTriggerObjectDefinition((CounterTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_CounterTriggerObjectDefinition(reader));
+        Register(typeof(DeathTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_DeathTriggerObjectDefinition((DeathTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_DeathTriggerObjectDefinition(reader));
+        Register(typeof(DelayTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_DelayTriggerObjectDefinition((DelayTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_DelayTriggerObjectDefinition(reader));
+        Register(typeof(DestroyTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_DestroyTriggerObjectDefinition((DestroyTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_DestroyTriggerObjectDefinition(reader));
+        Register(typeof(FollowTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_FollowTriggerObjectDefinition((FollowTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_FollowTriggerObjectDefinition(reader));
+        Register(typeof(Group), static (value, writer) => WriteSalmon_Levels_Objects_Group((Group)value, writer), static reader => ReadSalmon_Levels_Objects_Group(reader));
+        Register(typeof(IfTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_IfTriggerObjectDefinition((IfTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_IfTriggerObjectDefinition(reader));
+        Register(typeof(LightObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_LightObjectDefinition((LightObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_LightObjectDefinition(reader));
+        Register(typeof(MagnetFieldObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_MagnetFieldObjectDefinition((MagnetFieldObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_MagnetFieldObjectDefinition(reader));
+        Register(typeof(MagnetPointObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_MagnetPointObjectDefinition((MagnetPointObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_MagnetPointObjectDefinition(reader));
+        Register(typeof(MoveTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_MoveTriggerObjectDefinition((MoveTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_MoveTriggerObjectDefinition(reader));
+        Register(typeof(ObjectReferences), static (value, writer) => WriteSalmon_Levels_Objects_ObjectReferences((ObjectReferences)value, writer), static reader => ReadSalmon_Levels_Objects_ObjectReferences(reader));
+        Register(typeof(RotationTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_RotationTriggerObjectDefinition((RotationTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_RotationTriggerObjectDefinition(reader));
+        Register(typeof(SetMaterialTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_SetMaterialTriggerObjectDefinition((SetMaterialTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_SetMaterialTriggerObjectDefinition(reader));
+        Register(typeof(SettingsDefinition), static (value, writer) => WriteSalmon_Levels_Objects_SettingsDefinition((SettingsDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_SettingsDefinition(reader));
+        Register(typeof(SkyColourTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_SkyColourTriggerObjectDefinition((SkyColourTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_SkyColourTriggerObjectDefinition(reader));
+        Register(typeof(TeleportTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_TeleportTriggerObjectDefinition((TeleportTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_TeleportTriggerObjectDefinition(reader));
+        Register(typeof(TextObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_TextObjectDefinition((TextObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_TextObjectDefinition(reader));
+        Register(typeof(ToggleTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_ToggleTriggerObjectDefinition((ToggleTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_ToggleTriggerObjectDefinition(reader));
+        Register(typeof(TouchTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_TouchTriggerObjectDefinition((TouchTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_TouchTriggerObjectDefinition(reader));
+        Register(typeof(Wall), static (value, writer) => WriteSalmon_Levels_Objects_Wall((Wall)value, writer), static reader => ReadSalmon_Levels_Objects_Wall(reader));
+        Register(typeof(WinObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_WinObjectDefinition((WinObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_WinObjectDefinition(reader));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_CheckpointObjectDefinition(CheckpointObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_CheckpointObjectDefinition(CheckpointObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(9u);
 
@@ -64,7 +66,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static CheckpointObjectDefinition ReadSalmon_Levels_CheckpointObjectDefinition(BinaryReader reader)
+    private static CheckpointObjectDefinition ReadSalmon_Levels_Objects_CheckpointObjectDefinition(BinaryReader reader)
     {
         var value = new CheckpointObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -102,7 +104,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.Audible = reader.ReadBoolean();
                     break;
                 case 6.0f:
-                    value.Trigger = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Trigger = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 default:
                     handled = false;
@@ -111,7 +113,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.CheckpointObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.CheckpointObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -128,7 +130,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_CoinObjectDefinition(CoinObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_CoinObjectDefinition(CoinObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(8u);
 
@@ -152,7 +154,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static CoinObjectDefinition ReadSalmon_Levels_CoinObjectDefinition(BinaryReader reader)
+    private static CoinObjectDefinition ReadSalmon_Levels_Objects_CoinObjectDefinition(BinaryReader reader)
     {
         var value = new CoinObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -187,7 +189,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.Audible = reader.ReadBoolean();
                     break;
                 case 4.0f:
-                    value.OnPickup = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.OnPickup = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 default:
                     handled = false;
@@ -196,7 +198,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.CoinObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.CoinObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -213,7 +215,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_CounterTriggerObjectDefinition(CounterTriggerObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_CounterTriggerObjectDefinition(CounterTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(7u);
 
@@ -243,7 +245,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static CounterTriggerObjectDefinition ReadSalmon_Levels_CounterTriggerObjectDefinition(BinaryReader reader)
+    private static CounterTriggerObjectDefinition ReadSalmon_Levels_Objects_CounterTriggerObjectDefinition(BinaryReader reader)
     {
         var value = new CounterTriggerObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -284,7 +286,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.CounterTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.CounterTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -301,7 +303,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_DeathTriggerObjectDefinition(DeathTriggerObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_DeathTriggerObjectDefinition(DeathTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(3u);
 
@@ -315,7 +317,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static DeathTriggerObjectDefinition ReadSalmon_Levels_DeathTriggerObjectDefinition(BinaryReader reader)
+    private static DeathTriggerObjectDefinition ReadSalmon_Levels_Objects_DeathTriggerObjectDefinition(BinaryReader reader)
     {
         var value = new DeathTriggerObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -335,7 +337,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.ID = reader.ReadUInt64();
                     break;
                 case 3.0f:
-                    value.OnRespawn = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.OnRespawn = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 default:
                     handled = false;
@@ -344,7 +346,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.DeathTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.DeathTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -361,7 +363,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_DelayTriggerObjectDefinition(DelayTriggerObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_DelayTriggerObjectDefinition(DelayTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(5u);
 
@@ -379,7 +381,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static DelayTriggerObjectDefinition ReadSalmon_Levels_DelayTriggerObjectDefinition(BinaryReader reader)
+    private static DelayTriggerObjectDefinition ReadSalmon_Levels_Objects_DelayTriggerObjectDefinition(BinaryReader reader)
     {
         var value = new DelayTriggerObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -399,7 +401,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.ID = reader.ReadUInt64();
                     break;
                 case 3.5f:
-                    value.Trigger = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Trigger = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 case 4.0f:
                     value.Wait = Clamp(reader.ReadSingle(), 0.0f, 999.0f);
@@ -414,7 +416,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.DelayTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.DelayTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -431,7 +433,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_DestroyTriggerObjectDefinition(DestroyTriggerObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_DestroyTriggerObjectDefinition(DestroyTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(4u);
 
@@ -447,7 +449,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static DestroyTriggerObjectDefinition ReadSalmon_Levels_DestroyTriggerObjectDefinition(BinaryReader reader)
+    private static DestroyTriggerObjectDefinition ReadSalmon_Levels_Objects_DestroyTriggerObjectDefinition(BinaryReader reader)
     {
         var value = new DestroyTriggerObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -467,7 +469,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.ID = reader.ReadUInt64();
                     break;
                 case 3.5f:
-                    value.Destroy = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Destroy = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 case 6.0f:
                     value.Wait = Clamp(reader.ReadSingle(), 0.0f, 999.0f);
@@ -479,7 +481,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.DestroyTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.DestroyTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -496,7 +498,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_FollowTriggerObjectDefinition(FollowTriggerObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_FollowTriggerObjectDefinition(FollowTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(7u);
 
@@ -518,7 +520,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static FollowTriggerObjectDefinition ReadSalmon_Levels_FollowTriggerObjectDefinition(BinaryReader reader)
+    private static FollowTriggerObjectDefinition ReadSalmon_Levels_Objects_FollowTriggerObjectDefinition(BinaryReader reader)
     {
         var value = new FollowTriggerObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -547,7 +549,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.Snap = reader.ReadBoolean();
                     break;
                 case 5.0f:
-                    value.Follow = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Follow = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 case 6.0f:
                     value.RunOnStart = reader.ReadBoolean();
@@ -559,7 +561,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.FollowTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.FollowTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -576,7 +578,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_Group(Group value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_Group(Group value, BinaryWriter writer)
     {
         writer.Write(5u);
 
@@ -602,7 +604,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Group ReadSalmon_Levels_Group(BinaryReader reader)
+    private static Group ReadSalmon_Levels_Objects_Group(BinaryReader reader)
     {
         var value = new Group();
         var count = checked((ushort)reader.ReadUInt32());
@@ -637,7 +639,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.Group has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.Group has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -650,7 +652,7 @@ internal static partial class GeneratedDynamicSerializers
             ((ISpecialSerializable)value).SpecialRead(reader);
             if (reader.BaseStream.Position != specialEnd)
             {
-                Debug.LogWarning($"Special read on Salmon.Levels.Group has length {specialLength} but read {reader.BaseStream.Position - (specialEnd - specialLength)} bytes.");
+                Debug.LogWarning($"Special read on Salmon.Levels.Objects.Group has length {specialLength} but read {reader.BaseStream.Position - (specialEnd - specialLength)} bytes.");
             }
             reader.BaseStream.Position = specialEnd;
         }
@@ -659,7 +661,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_IfTriggerObjectDefinition(IfTriggerObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_IfTriggerObjectDefinition(IfTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(6u);
 
@@ -687,7 +689,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static IfTriggerObjectDefinition ReadSalmon_Levels_IfTriggerObjectDefinition(BinaryReader reader)
+    private static IfTriggerObjectDefinition ReadSalmon_Levels_Objects_IfTriggerObjectDefinition(BinaryReader reader)
     {
         var value = new IfTriggerObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -722,10 +724,10 @@ internal static partial class GeneratedDynamicSerializers
                     value.Operator = (Comparison)reader.ReadByte();
                     break;
                 case 8.0f:
-                    value.TrueTrigger = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.TrueTrigger = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 case 9.0f:
-                    value.FalseTrigger = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.FalseTrigger = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 default:
                     handled = false;
@@ -734,7 +736,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.IfTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.IfTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -751,7 +753,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_LightObjectDefinition(LightObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_LightObjectDefinition(LightObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(9u);
 
@@ -777,7 +779,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static LightObjectDefinition ReadSalmon_Levels_LightObjectDefinition(BinaryReader reader)
+    private static LightObjectDefinition ReadSalmon_Levels_Objects_LightObjectDefinition(BinaryReader reader)
     {
         var value = new LightObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -824,7 +826,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.LightObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.LightObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -841,7 +843,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_MagnetFieldObjectDefinition(MagnetFieldObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_MagnetFieldObjectDefinition(MagnetFieldObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(6u);
 
@@ -861,7 +863,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static MagnetFieldObjectDefinition ReadSalmon_Levels_MagnetFieldObjectDefinition(BinaryReader reader)
+    private static MagnetFieldObjectDefinition ReadSalmon_Levels_Objects_MagnetFieldObjectDefinition(BinaryReader reader)
     {
         var value = new MagnetFieldObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -899,7 +901,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.MagnetFieldObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.MagnetFieldObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -916,7 +918,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_MagnetPointObjectDefinition(MagnetPointObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_MagnetPointObjectDefinition(MagnetPointObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(6u);
 
@@ -936,7 +938,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static MagnetPointObjectDefinition ReadSalmon_Levels_MagnetPointObjectDefinition(BinaryReader reader)
+    private static MagnetPointObjectDefinition ReadSalmon_Levels_Objects_MagnetPointObjectDefinition(BinaryReader reader)
     {
         var value = new MagnetPointObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -974,7 +976,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.MagnetPointObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.MagnetPointObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -991,7 +993,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_MoveTriggerObjectDefinition(MoveTriggerObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_MoveTriggerObjectDefinition(MoveTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(10u);
 
@@ -1019,7 +1021,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static MoveTriggerObjectDefinition ReadSalmon_Levels_MoveTriggerObjectDefinition(BinaryReader reader)
+    private static MoveTriggerObjectDefinition ReadSalmon_Levels_Objects_MoveTriggerObjectDefinition(BinaryReader reader)
     {
         var value = new MoveTriggerObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -1045,7 +1047,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.Rotation = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
                     break;
                 case 3.5f:
-                    value.Move = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Move = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 case 4.0f:
                     value.MoveSpeedMode = (TriggerSpeedMode)reader.ReadByte();
@@ -1060,7 +1062,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.EasingDirection = (EasingDirection)reader.ReadInt32();
                     break;
                 case 7.0f:
-                    value.Trigger = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Trigger = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 default:
                     handled = false;
@@ -1069,7 +1071,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.MoveTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.MoveTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -1086,7 +1088,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_ObjectReferences(ObjectReferences value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_ObjectReferences(ObjectReferences value, BinaryWriter writer)
     {
         writer.Write(0u);
 
@@ -1102,7 +1104,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static ObjectReferences ReadSalmon_Levels_ObjectReferences(BinaryReader reader)
+    private static ObjectReferences ReadSalmon_Levels_Objects_ObjectReferences(BinaryReader reader)
     {
         var value = new ObjectReferences();
         var count = checked((ushort)reader.ReadUInt32());
@@ -1122,7 +1124,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.ObjectReferences has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.ObjectReferences has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -1135,7 +1137,7 @@ internal static partial class GeneratedDynamicSerializers
             ((ISpecialSerializable)value).SpecialRead(reader);
             if (reader.BaseStream.Position != specialEnd)
             {
-                Debug.LogWarning($"Special read on Salmon.Levels.ObjectReferences has length {specialLength} but read {reader.BaseStream.Position - (specialEnd - specialLength)} bytes.");
+                Debug.LogWarning($"Special read on Salmon.Levels.Objects.ObjectReferences has length {specialLength} but read {reader.BaseStream.Position - (specialEnd - specialLength)} bytes.");
             }
             reader.BaseStream.Position = specialEnd;
         }
@@ -1144,7 +1146,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_RotationTriggerObjectDefinition(RotationTriggerObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_RotationTriggerObjectDefinition(RotationTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(10u);
 
@@ -1172,7 +1174,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static RotationTriggerObjectDefinition ReadSalmon_Levels_RotationTriggerObjectDefinition(BinaryReader reader)
+    private static RotationTriggerObjectDefinition ReadSalmon_Levels_Objects_RotationTriggerObjectDefinition(BinaryReader reader)
     {
         var value = new RotationTriggerObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -1198,7 +1200,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.Rotation = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
                     break;
                 case 3.5f:
-                    value.Rotate = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Rotate = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 case 4.0f:
                     value.RotationSpeedMode = (TriggerSpeedMode)reader.ReadByte();
@@ -1213,7 +1215,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.EasingDirection = (EasingDirection)reader.ReadInt32();
                     break;
                 case 7.0f:
-                    value.Trigger = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Trigger = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 default:
                     handled = false;
@@ -1222,7 +1224,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.RotationTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.RotationTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -1239,7 +1241,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_SetMaterialTriggerObjectDefinition(SetMaterialTriggerObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_SetMaterialTriggerObjectDefinition(SetMaterialTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(4u);
 
@@ -1255,7 +1257,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static SetMaterialTriggerObjectDefinition ReadSalmon_Levels_SetMaterialTriggerObjectDefinition(BinaryReader reader)
+    private static SetMaterialTriggerObjectDefinition ReadSalmon_Levels_Objects_SetMaterialTriggerObjectDefinition(BinaryReader reader)
     {
         var value = new SetMaterialTriggerObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -1278,7 +1280,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.Material = reader.ReadString();
                     break;
                 case 5.0f:
-                    value.Wall = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Wall = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 default:
                     handled = false;
@@ -1287,7 +1289,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.SetMaterialTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.SetMaterialTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -1304,7 +1306,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_SettingsDefinition(SettingsDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_SettingsDefinition(SettingsDefinition value, BinaryWriter writer)
     {
         writer.Write(19u);
 
@@ -1350,7 +1352,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static SettingsDefinition ReadSalmon_Levels_SettingsDefinition(BinaryReader reader)
+    private static SettingsDefinition ReadSalmon_Levels_Objects_SettingsDefinition(BinaryReader reader)
     {
         var value = new SettingsDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -1433,7 +1435,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.SettingsDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.SettingsDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -1450,7 +1452,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_SkyColourTriggerObjectDefinition(SkyColourTriggerObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_SkyColourTriggerObjectDefinition(SkyColourTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(6u);
 
@@ -1470,7 +1472,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static SkyColourTriggerObjectDefinition ReadSalmon_Levels_SkyColourTriggerObjectDefinition(BinaryReader reader)
+    private static SkyColourTriggerObjectDefinition ReadSalmon_Levels_Objects_SkyColourTriggerObjectDefinition(BinaryReader reader)
     {
         var value = new SkyColourTriggerObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -1508,7 +1510,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.SkyColourTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.SkyColourTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -1525,7 +1527,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_TeleportTriggerObjectDefinition(TeleportTriggerObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_TeleportTriggerObjectDefinition(TeleportTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(5u);
 
@@ -1543,7 +1545,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static TeleportTriggerObjectDefinition ReadSalmon_Levels_TeleportTriggerObjectDefinition(BinaryReader reader)
+    private static TeleportTriggerObjectDefinition ReadSalmon_Levels_Objects_TeleportTriggerObjectDefinition(BinaryReader reader)
     {
         var value = new TeleportTriggerObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -1569,7 +1571,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.Rotation = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
                     break;
                 case 3.0f:
-                    value.Trigger = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Trigger = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 default:
                     handled = false;
@@ -1578,7 +1580,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.TeleportTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.TeleportTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -1595,7 +1597,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_TextObjectDefinition(TextObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_TextObjectDefinition(TextObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(12u);
 
@@ -1627,7 +1629,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static TextObjectDefinition ReadSalmon_Levels_TextObjectDefinition(BinaryReader reader)
+    private static TextObjectDefinition ReadSalmon_Levels_Objects_TextObjectDefinition(BinaryReader reader)
     {
         var value = new TextObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -1683,7 +1685,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.TextObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.TextObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -1700,7 +1702,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_ToggleTriggerObjectDefinition(ToggleTriggerObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_ToggleTriggerObjectDefinition(ToggleTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(4u);
 
@@ -1716,7 +1718,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static ToggleTriggerObjectDefinition ReadSalmon_Levels_ToggleTriggerObjectDefinition(BinaryReader reader)
+    private static ToggleTriggerObjectDefinition ReadSalmon_Levels_Objects_ToggleTriggerObjectDefinition(BinaryReader reader)
     {
         var value = new ToggleTriggerObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -1736,7 +1738,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.ID = reader.ReadUInt64();
                     break;
                 case 3.5f:
-                    value.Toggle = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Toggle = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 case 4.0f:
                     value.Mode = (ToggleMode)reader.ReadByte();
@@ -1748,7 +1750,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.ToggleTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.ToggleTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -1765,7 +1767,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_TouchTriggerObjectDefinition(TouchTriggerObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_TouchTriggerObjectDefinition(TouchTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(7u);
 
@@ -1787,7 +1789,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static TouchTriggerObjectDefinition ReadSalmon_Levels_TouchTriggerObjectDefinition(BinaryReader reader)
+    private static TouchTriggerObjectDefinition ReadSalmon_Levels_Objects_TouchTriggerObjectDefinition(BinaryReader reader)
     {
         var value = new TouchTriggerObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -1816,7 +1818,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.Scale = Clamp(reader.ReadSingle(), 0.05f, float.NaN);
                     break;
                 case 3.5f:
-                    value.Trigger = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Trigger = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 case 4.0f:
                     value.Cooldown = Clamp(reader.ReadSingle(), -1.0f, 999.0f);
@@ -1828,7 +1830,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.TouchTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.TouchTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -1845,7 +1847,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_Wall(Wall value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_Wall(Wall value, BinaryWriter writer)
     {
         writer.Write(15u);
 
@@ -1883,7 +1885,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Wall ReadSalmon_Levels_Wall(BinaryReader reader)
+    private static Wall ReadSalmon_Levels_Objects_Wall(BinaryReader reader)
     {
         var value = new Wall();
         var count = checked((ushort)reader.ReadUInt32());
@@ -1933,10 +1935,10 @@ internal static partial class GeneratedDynamicSerializers
                     value.BreakVelocity = Clamp(reader.ReadSingle(), -1.0f, 999.0f);
                     break;
                 case 8.0f:
-                    value.Trigger = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Trigger = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 case 9.0f:
-                    value.OnTouch = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.OnTouch = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 case 10.0f:
                     value.TouchCooldown = Clamp(reader.ReadSingle(), 0.0f, 999.0f);
@@ -1948,7 +1950,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.Wall has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.Wall has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;
@@ -1965,7 +1967,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void WriteSalmon_Levels_WinObjectDefinition(WinObjectDefinition value, BinaryWriter writer)
+    private static void WriteSalmon_Levels_Objects_WinObjectDefinition(WinObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(8u);
 
@@ -1989,7 +1991,7 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static WinObjectDefinition ReadSalmon_Levels_WinObjectDefinition(BinaryReader reader)
+    private static WinObjectDefinition ReadSalmon_Levels_Objects_WinObjectDefinition(BinaryReader reader)
     {
         var value = new WinObjectDefinition();
         var count = checked((ushort)reader.ReadUInt32());
@@ -2024,7 +2026,7 @@ internal static partial class GeneratedDynamicSerializers
                     value.Audible = reader.ReadBoolean();
                     break;
                 case 4.0f:
-                    value.Trigger = ReadSalmon_Levels_ObjectReferences(reader);
+                    value.Trigger = ReadSalmon_Levels_Objects_ObjectReferences(reader);
                     break;
                 default:
                     handled = false;
@@ -2033,7 +2035,7 @@ internal static partial class GeneratedDynamicSerializers
 
             if (handled && reader.BaseStream.Position != fieldEnd)
             {
-                Debug.LogWarning($"Field {order} on Salmon.Levels.WinObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.WinObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
             }
 
             reader.BaseStream.Position = fieldEnd;

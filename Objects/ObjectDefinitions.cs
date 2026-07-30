@@ -1,5 +1,4 @@
-namespace Salmon.Levels
-{
+namespace Salmon.Levels.Objects;
 
 /// <summary>Provides identity data used by every level object.</summary>
 public abstract class ObjectDefinition
@@ -97,24 +96,7 @@ public abstract partial class UniformScaledObjectDefinition : PhysicalObjectDefi
 }
 
 
-/// <summary>Controls whether a wall renders visuals, collision, or both.</summary>
-
-namespace Enums
-{
-public enum WallMode : byte
-{
-    /// <summary>The wall renders and collides.</summary>
-    [InspectorName("Visuals & Collision")]
-    VisualsCollision,
-    /// <summary>The wall collides without rendering.</summary>
-    Collision,
-    /// <summary>The wall renders without collision.</summary>
-    Visuals
-}
-
 /// <summary>Contains an ordered collection of child level objects.</summary>
-
-}
 [ObjectType("Group")]
 public sealed partial class Group : UniformScaledObjectDefinition, ISpecialSerializable
 {
@@ -249,40 +231,7 @@ public sealed partial class MagnetFieldObjectDefinition : ScaledObjectDefinition
     public float Strength = 25f;
 }
 
-/// <summary>Identifies one of the four horizontal cardinal directions.</summary>
-namespace Enums
-{
-public enum CardinalDirection : byte
-{
-    /// <summary>Negative Z.</summary>
-    [InspectorName("Z-")]
-    ZNeg,
-    /// <summary>Positive Z.</summary>
-    [InspectorName("Z+")]
-    ZPos,
-    /// <summary>Negative X.</summary>
-    [InspectorName("X-")]
-    XNeg,
-    /// <summary>Positive X.</summary>
-    [InspectorName("X+")]
-    XPos,
-}
-
-internal static class CardinalDirectionExtensions
-{
-    internal static float GetYaw(this CardinalDirection direction) => direction switch
-    {
-        CardinalDirection.ZNeg => -90f,
-        CardinalDirection.XPos => 0f,
-        CardinalDirection.ZPos => 90f,
-        CardinalDirection.XNeg => 180f,
-        _ => 0f,
-    };
-}
-
 /// <summary>Defines a checkpoint.</summary>
-
-}
 [ObjectType("Checkpoint")]
 public sealed partial class CheckpointObjectDefinition : UniformScaledObjectDefinition
 {
@@ -368,141 +317,7 @@ public sealed partial class MagnetPointObjectDefinition : PhysicalObjectDefiniti
 }
 
 
-/// <summary>Specifies an arithmetic counter operation.</summary>
-
-namespace Enums
-{
-public enum Operator : byte
-{
-    /// <summary>Adds the operand.</summary>
-    Add,
-    /// <summary>Subtracts the operand.</summary>
-    Subtract,
-    /// <summary>Multiplies by the operand.</summary>
-    Multiply,
-    /// <summary>Divides by the operand.</summary>
-    Divide,
-    /// <summary>Replaces the counter with the operand.</summary>
-    Set
-}
-
-
-
-}
-namespace Enums
-{
-internal enum Comparison : byte
-{
-    [InspectorName("Equal To")]
-    Equal,
-    [InspectorName("Not Equal To")]
-    NotEqual,
-    [InspectorName("Greater Than")]
-    Greater,
-    [InspectorName("Less Than")]
-    Less,
-    [InspectorName("Greater Than Or Equal To")]
-    GreaterOrEqual,
-    [InspectorName("Less Than Or Equal To")]
-    LessOrEqual
-}
-
-/// <summary>Specifies a visibility or activation change.</summary>
-
-}
-namespace Enums
-{
-public enum ToggleMode : byte
-{
-    /// <summary>Enables the target.</summary>
-    On,
-    /// <summary>Disables the target.</summary>
-    Off,
-    /// <summary>Inverts the target's current state.</summary>
-    Flip
-}
-
-/// <summary>Specifies how a move or rotation trigger interprets its speed.</summary>
-
-}
-namespace Enums
-{
-public enum TriggerSpeedMode : byte
-{
-    /// <summary>The speed is measured in world units per second.</summary>
-    [InspectorName("units/second")]
-    WorldSpeed,
-    /// <summary>The value is the total duration in seconds.</summary>
-    [InspectorName("seconds in total")]
-    TimeSeconds
-}
-
-
-/// <summary>Identifies the easing curve family used by move and rotation triggers.</summary>
-}
-namespace Enums
-{
-public enum EasingType
-{
-    /// <summary>Linear interpolation.</summary>
-    [InspectorName("linear")]
-    Linear,
-
-    /// <summary>Quadratic interpolation.</summary>
-    [InspectorName("quadratic")]
-    Quadratic,
-
-    /// <summary>Cubic interpolation.</summary>
-    [InspectorName("cubic")]
-    Cubic,
-
-    /// <summary>Sinusoidal interpolation.</summary>
-    [InspectorName("sine")]
-    Sine,
-
-    /// <summary>Circular interpolation.</summary>
-    [InspectorName("circular")]
-    Circ,
-
-    /// <summary>Exponential interpolation.</summary>
-    [InspectorName("exponential")]
-    Expo,
-
-    /// <summary>Overshooting back interpolation.</summary>
-    [InspectorName("back")]
-    Back,
-
-    /// <summary>Bouncing interpolation.</summary>
-    [InspectorName("bounce")]
-    Bounce,
-
-    /// <summary>Elastic interpolation.</summary>
-    [InspectorName("elastic")]
-    Elastic
-}
-
-/// <summary>Specifies which end of an easing curve is accelerated.</summary>
-}
-namespace Enums
-{
-public enum EasingDirection
-{
-    /// <summary>Accelerates at the start.</summary>
-    [InspectorName("in")]
-    In,
-
-    /// <summary>Decelerates at the end.</summary>
-    [InspectorName("out")]
-    Out,
-
-    /// <summary>Accelerates at the start and decelerates at the end.</summary>
-    [InspectorName("in out")]
-    InOut
-}
-
 /// <summary>Moves referenced objects when triggered.</summary>
-
-}
 [ObjectType("Move Trigger")]
 public sealed partial class MoveTriggerObjectDefinition : PhysicalObjectDefinition
 {
@@ -607,20 +422,7 @@ public sealed partial class FollowTriggerObjectDefinition : ObjectDefinition
     public bool RunOnStart = false;
 }
 
-/// <summary>Identifies a follow trigger's target transform.</summary>
-namespace Enums
-{
-public enum FollowTarget : byte
-{
-    /// <summary>The gameplay camera (includes rotation).</summary>
-    Camera,
-    /// <summary>The player (excludes rotation).</summary>
-    Player,
-}
-
 /// <summary>Destroys referenced objects when triggered.</summary>
-
-}
 [ObjectType("Destroy Trigger")]
 public sealed partial class DestroyTriggerObjectDefinition : ObjectDefinition
 {
@@ -672,6 +474,7 @@ public sealed partial class DelayTriggerObjectDefinition : ObjectDefinition
 [ObjectType("Counter Trigger")]
 public sealed partial class CounterTriggerObjectDefinition : ObjectDefinition
 {
+    /// <summary>The counter to operate on.</summary>
     [InspectorField("Counter", Order = 3)]
     public string Counter;
     [InspectorField("Counter ID", Order = 4, NoInspect = true)]
@@ -683,7 +486,7 @@ public sealed partial class CounterTriggerObjectDefinition : ObjectDefinition
     [InspectorField("Operand", Order = 6)]
     public string Operand = "1";
     [InspectorField("Counter IDs", Order = 7, NoInspect = true)]
-    public int[] CounterIDs = [];
+    internal int[] CounterIDs = [];
 }
 
 /// <summary>Triggers one of two object sets based on an expression.</summary>
@@ -696,7 +499,7 @@ public sealed partial class IfTriggerObjectDefinition : ObjectDefinition
     [InspectorField("Expression", Order = 3.5f)]
     public string Expression = "1";
     [InspectorField("Counter IDs", Order = 4.5f, NoInspect = true)]
-    public int[] CounterIDs = [];
+    internal int[] CounterIDs = [];
 
     [InspectorField("Counter", Order = 3, Old = true)]
     internal string Counter = "";
@@ -784,5 +587,4 @@ public sealed partial class CoinObjectDefinition : UniformScaledObjectDefinition
     /// <summary>The objects triggered when the coin is collected.</summary>
     [InspectorField("On Pickup", Order = 4)]
     public ObjectReferences OnPickup = new();
-}
 }

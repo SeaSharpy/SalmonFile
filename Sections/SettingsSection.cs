@@ -1,4 +1,4 @@
-namespace Salmon.Levels;
+namespace Salmon.Levels.Sections;
 
 /// <summary>Serializes level editor and environment settings.</summary>
 public sealed class SettingsSection : LevelSection
