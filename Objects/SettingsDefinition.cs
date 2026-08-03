@@ -54,10 +54,6 @@ public sealed partial class SettingsDefinition
     [InspectorField("B", Order = 7.3f, Min = 0f, Max = 1f, Slider = true)]
     public float Blue = 1f;
 
-    /// <exclude />
-    [InspectorField("Fog Intensity", Order = 8, Old = true)]
-    public string _FogIntensity = "Default";
-
     /// <summary>The current numeric fog intensity.</summary>
     [InspectorField("Fog Intensity", Order = 8.5f, Min = 0, Max = 20, Slider = true)]
     public int FogIntensity = 3;

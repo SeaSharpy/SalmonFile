@@ -1,5 +1,6 @@
 namespace Salmon.Levels.Objects;
 
+#if !DEMO_APP
 /// <summary>Provides identity data used by every level object.</summary>
 public abstract class ObjectDefinition
 {
@@ -8,7 +9,7 @@ public abstract class ObjectDefinition
     public string Name = "Unknown";
 
     /// <summary>The persistent object identifier.</summary>
-    [InspectorField(label: "ID", Order = -1, ReadOnly = true, NoInspect = true)]
+    [InspectorField(label: "ID", Order = -1, NoInspect = true)]
     public ulong ID { get; internal set; } = Snowflake.CreateULong();
 }
 
@@ -24,6 +25,7 @@ public abstract partial class PhysicalObjectDefinition : ObjectDefinition
     [InspectorField("Rotation", Order = 1, Handle = InspectorHandleType.Rotate)]
     public Vector3 Rotation = Vector3.zero;
 }
+#endif
 
 /// <summary>Stores a set of persistent level object identifiers.</summary>
 public sealed partial class ObjectReferences : ISpecialSerializable
@@ -33,6 +35,7 @@ public sealed partial class ObjectReferences : ISpecialSerializable
     /// More than 8 will cause strange UI glitches and more than 255 will not save correctly. 
     /// </summary>
     public readonly HashSet<ulong> IDs = new(8);
+    #if !DEMO_APP
     internal static string GetDisplayPath(ulong id, Group root)
     {
         if (root.ID == id)
@@ -62,6 +65,7 @@ public sealed partial class ObjectReferences : ISpecialSerializable
         }
         return false;
     }
+    #endif
     /// <inheritdoc/>
     public void SpecialWrite(BinaryWriter writer)
     {
@@ -79,6 +83,7 @@ public sealed partial class ObjectReferences : ISpecialSerializable
     }
 }
 
+#if !DEMO_APP
 /// <summary>Adds non-uniform local scale to a level object.</summary>
 public abstract partial class ScaledObjectDefinition : PhysicalObjectDefinition
 {
@@ -588,3 +593,4 @@ public sealed partial class CoinObjectDefinition : UniformScaledObjectDefinition
     [InspectorField("On Pickup", Order = 4)]
     public ObjectReferences OnPickup = new();
 }
+#endif

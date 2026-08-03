@@ -1,3 +1,4 @@
+#if !DEMO_APP
 namespace Salmon.Levels.Sections;
 
 /// <summary>Stores searchable level metadata loaded before the full level payload.</summary>
@@ -10,15 +11,13 @@ public sealed class MetadataSection : LevelSection, IDisposable
     [InspectorField("Author", Order = 1)]
     public string Author = "";
 
-    /// <inheritdoc/>
-    public override void Read(BinaryReader reader)
+    internal override void Read(BinaryReader reader)
     {
         DynamicSerializer.Deserialize(typeof(MetadataSection), this, reader);
         Normalize();
     }
 
-    /// <inheritdoc/>
-    public override void Write(BinaryWriter writer)
+    internal override void Write(BinaryWriter writer)
     {
         Normalize();
         DynamicSerializer.Serialize(this, writer);
@@ -31,3 +30,4 @@ public sealed class MetadataSection : LevelSection, IDisposable
         Author = string.IsNullOrWhiteSpace(Author) ? "Unknown" : Author.Trim();
     }
 }
+#endif

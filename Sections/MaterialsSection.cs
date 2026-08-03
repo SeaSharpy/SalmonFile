@@ -1,3 +1,4 @@
+#if !DEMO_APP
 namespace Salmon.Levels.Sections;
 
 
@@ -54,8 +55,7 @@ public sealed partial class MaterialsSection : LevelSection
             CustomMaterials[i] = new();
     }
 
-    /// <inheritdoc/>
-    public override void Read(BinaryReader reader)
+    internal override void Read(BinaryReader reader)
     {
         foreach (var customMaterial in CustomMaterials)
         {
@@ -70,8 +70,7 @@ public sealed partial class MaterialsSection : LevelSection
         }
     }
 
-    /// <inheritdoc/>
-    public override void Write(BinaryWriter writer)
+    internal override void Write(BinaryWriter writer)
     {
         foreach (var customMaterial in CustomMaterials)
         {
@@ -79,14 +78,5 @@ public sealed partial class MaterialsSection : LevelSection
             DynamicSerializer.Serialize(customMaterial, writer);
         }
     }
-
-    /// <summary>Maps legacy custom material names to their current slot keys.</summary>
-    /// <returns>A case-insensitive map from saved names to keys such as <c>Custom 1</c>.</returns>
-    public Dictionary<string, string> GetCustomMaterialNameMap()
-    {
-        var materialMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        for (var i = 0; i < CustomMaterials.Length; i++)
-            materialMap[CustomMaterials[i].Name] = Salmon.CustomMaterials.GetKey(i);
-        return materialMap;
-    }
 }
+#endif

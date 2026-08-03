@@ -1,3 +1,4 @@
+#if !DEMO_APP
 using System.Reflection;
 
 namespace Salmon.Levels.Objects;
@@ -108,3 +109,4 @@ internal static class ObjectMetadata
         return stream.ToArray();
     }
 }
+#endif

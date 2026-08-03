@@ -1,14 +1,10 @@
+#if !DEMO_APP
 using System.IO.Compression;
 namespace Salmon.Levels.Sections;
 
-/// <summary>Locates a compressed level section within a Salmon file.</summary>
-/// <param name="offset">The byte offset from the start of the file.</param>
-/// <param name="length">The compressed length in bytes.</param>
-public readonly struct SectionHeader(long offset, long length)
+internal readonly struct SectionHeader(long offset, long length)
 {
-    /// <summary>The byte offset of the compressed section.</summary>
     public long Offset => offset;
-    /// <summary>The compressed section length in bytes.</summary>
     public long Length => length;
 }
 
@@ -55,14 +51,11 @@ public abstract class LevelSection : IDisposable
         using var deflate = new DeflateStream(input, CompressionMode.Decompress);
         deflate.CopyTo(output);
     }
-    /// <summary>Reads the decompressed section payload.</summary>
-    /// <param name="reader">The section payload reader.</param>
-    public virtual void Read(BinaryReader reader) { }
-    /// <summary>Writes the uncompressed section payload.</summary>
-    /// <param name="writer">The section payload writer.</param>
-    public virtual void Write(BinaryWriter writer) { }
+    internal virtual void Read(BinaryReader reader) { }
+    internal virtual void Write(BinaryWriter writer) { }
     /// <summary>Releases resources owned by the section.</summary>
     public virtual void Dispose() { }
     /// <summary>Normalizes section values after reading and before writing.</summary>
     public virtual void Normalize() { }
 }
+#endif

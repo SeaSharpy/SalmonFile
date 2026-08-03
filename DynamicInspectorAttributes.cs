@@ -31,15 +31,13 @@ public sealed class InspectorFieldAttribute(string label) : Attribute
     public InspectorHandleType Handle;
     /// <summary>Whether the inspector uses a multiline text editor.</summary>
     public bool Multiline;
-    /// <summary>Whether the inspector prevents editing.</summary>
-    public bool ReadOnly;
     /// <summary>Whether numeric values are displayed with a slider.</summary>
     public bool Slider;
-    /// <summary>Whether the field is omitted from serialization.</summary>
+    /// <exclude />
     public bool NoSave;
-    /// <summary>Whether the field is hidden from the inspector.</summary>
+    /// <exclude />
     public bool NoInspect;
-    /// <summary>Whether the field is retained only for reading older formats.</summary>
+    /// <exclude />
     public bool Old;
     /// <summary>The named option source used by the inspector.</summary>
     public string Options = "";

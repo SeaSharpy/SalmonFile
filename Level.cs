@@ -1,3 +1,4 @@
+#if !DEMO_APP
 namespace Salmon.Levels;
 
 /// <summary>Represents a versioned <c>.salmon</c> level and its lazily loaded sections.</summary>
@@ -12,6 +13,7 @@ public sealed partial class Level : IDisposable
     /// <summary>The reader associated with <see cref="Stream"/>, or <see langword="null"/> for a new level.</summary>
     public BinaryReader Reader;
     private bool Loaded;
+    private bool EnvironmentLoaded;
     private int Version = CurrentVersion;
     private string IDInternal = "";
 
@@ -216,6 +218,19 @@ public sealed partial class Level : IDisposable
         File.Delete(Path);
     }
 
+    internal Level LoadEnvironment()
+    {
+        if (EnvironmentLoaded)
+            return this;
+
+        LoadSection(SectionKind.Materials, Materials);
+        LoadSection(SectionKind.Settings, SettingsSection);
+        Materials.Normalize();
+        SettingsSection.Normalize();
+        EnvironmentLoaded = true;
+        return this;
+    }
+
     /// <summary>Lazily loads materials, settings, and objects.</summary>
     /// <returns>This level.</returns>
     public Level Load()
@@ -223,8 +238,7 @@ public sealed partial class Level : IDisposable
         if (Loaded)
             return this;
 
-        LoadSection(SectionKind.Materials, Materials);
-        LoadSection(SectionKind.Settings, SettingsSection);
+        LoadEnvironment();
         LoadSection(SectionKind.Objects, ObjectsSection);
         Normalize();
         Loaded = true;
@@ -241,6 +255,7 @@ public sealed partial class Level : IDisposable
         ObjectsSection = Attach(new ObjectsSection());
         Materials = Attach(new MaterialsSection());
         Loaded = false;
+        EnvironmentLoaded = false;
     }
 
     /// <summary>Normalizes all section data before use or serialization.</summary>
@@ -356,3 +371,4 @@ public sealed partial class Level : IDisposable
         Materials = 5,
     }
 }
+#endif

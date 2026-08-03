@@ -1,3 +1,4 @@
+#if !DEMO_APP
 namespace Salmon.Levels.Sections;
 
 /// <summary>Stores a fixed-size RGB preview image for a level.</summary>
@@ -11,8 +12,7 @@ public sealed partial class PreviewSection : LevelSection
     public const int PreviewByteCount = PreviewWidth * PreviewHeight * 3;
     /// <summary>The packed RGB preview pixels.</summary>
     public byte[] Bytes = new byte[PreviewByteCount];
-    /// <inheritdoc/>
-    public override void Read(BinaryReader reader)
+    internal override void Read(BinaryReader reader)
     {
         var offset = 0;
 
@@ -28,10 +28,10 @@ public sealed partial class PreviewSection : LevelSection
             offset += read;
         }
     }
-    /// <inheritdoc/>
-    public override void Write(BinaryWriter writer)
+    internal override void Write(BinaryWriter writer)
     {
         writer.Write(Bytes);
     }
 
 }
+#endif
