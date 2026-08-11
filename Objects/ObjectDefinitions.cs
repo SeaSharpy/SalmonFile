@@ -154,6 +154,13 @@ public sealed partial class Group : UniformScaledObjectDefinition, ISpecialSeria
     }
 }
 
+[ObjectType("Builtin")]
+public partial class Builtin : ScaledObjectDefinition
+{
+    [InspectorField("Target", Order = 3, Options = "Prefabs")]
+    public string Target;
+}
+
 /// <summary>Defines a rendered and/or collidable wall.</summary>
 
 [ObjectType("Wall")]

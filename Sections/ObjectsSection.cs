@@ -60,6 +60,15 @@ public sealed class ObjectsSection : LevelSection
                     var ifPath = ObjectReferences.GetDisplayPath(obj.ID, Root);
                     ifTrigger.CounterIDs = CompileExpression(ifPath, ifTrigger.Expression ?? "");
                     break;
+                case Wall wall:
+                    var wallPath = ObjectReferences.GetDisplayPath(obj.ID, Root);
+                    if (wall.Mode == WallMode.Visuals && wall.OnTouch.IDs.Count > 0)
+                        Warnings.Add($"Wall {wallPath} has On Touch set in Visuals mode. Use Trigger mode instead.");
+                    if (wall.Mode == WallMode.Visuals && (wall.Trigger.IDs.Count > 0 || wall.BreakVelocity > -1f))
+                        Warnings.Add($"Wall {wallPath} has On Break set or Break Velocity enabled in Visuals mode. Use a collision mode instead.");
+                    if (wall.Trigger.IDs.Count > 0 && wall.BreakVelocity < 0f)
+                        Warnings.Add($"Wall {wallPath} has On Break set while Break Velocity is disabled.");
+                    break;
                 case TouchTriggerObjectDefinition touchTrigger:
                     if (touchTriggerWarned++ == 0)
                         Warnings.Add("Touch triggers are soon to be replaced by just walls with On Touch.");

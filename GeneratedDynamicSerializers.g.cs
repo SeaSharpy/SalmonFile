@@ -78,7 +78,7 @@ internal static partial class GeneratedDynamicSerializers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void WriteSalmon_Levels_Objects_SettingsDefinition(SettingsDefinition value, BinaryWriter writer)
     {
-        writer.Write(19u);
+        writer.Write(22u);
 
         WriteBooleanField(writer, -1.0f, value.AutoSave);
 
@@ -107,6 +107,12 @@ internal static partial class GeneratedDynamicSerializers
         WriteInt32Field(writer, 8.5f, Clamp(value.FogIntensity, 0.0f, 20.0f));
 
         WriteSingleField(writer, 9.0f, Clamp(value.DeathY, -1000.0f, 1000.0f));
+
+        WriteBooleanField(writer, 9.1f, value.DisplayStyle);
+
+        WriteBooleanField(writer, 9.2f, value.AllowWalls);
+
+        WriteBooleanField(writer, 9.3f, value.AllowCoyote);
 
         WriteBooleanField(writer, 10.0f, value.PreviewGuide);
 
@@ -180,6 +186,15 @@ internal static partial class GeneratedDynamicSerializers
                 case 9.0f:
                     value.DeathY = Clamp(reader.ReadSingle(), -1000.0f, 1000.0f);
                     break;
+                case 9.1f:
+                    value.DisplayStyle = reader.ReadBoolean();
+                    break;
+                case 9.2f:
+                    value.AllowWalls = reader.ReadBoolean();
+                    break;
+                case 9.3f:
+                    value.AllowCoyote = reader.ReadBoolean();
+                    break;
                 case 10.0f:
                     value.PreviewGuide = reader.ReadBoolean();
                     break;
@@ -234,6 +249,7 @@ internal static partial class GeneratedDynamicSerializers
 {
     static GeneratedDynamicSerializers()
     {
+        Register(typeof(Builtin), static (value, writer) => WriteSalmon_Levels_Objects_Builtin((Builtin)value, writer), static reader => ReadSalmon_Levels_Objects_Builtin(reader));
         Register(typeof(CheckpointObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_CheckpointObjectDefinition((CheckpointObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_CheckpointObjectDefinition(reader));
         Register(typeof(CoinObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_CoinObjectDefinition((CoinObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_CoinObjectDefinition(reader));
         Register(typeof(CounterTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_CounterTriggerObjectDefinition((CounterTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_CounterTriggerObjectDefinition(reader));
@@ -258,6 +274,81 @@ internal static partial class GeneratedDynamicSerializers
         Register(typeof(TouchTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_TouchTriggerObjectDefinition((TouchTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_TouchTriggerObjectDefinition(reader));
         Register(typeof(Wall), static (value, writer) => WriteSalmon_Levels_Objects_Wall((Wall)value, writer), static reader => ReadSalmon_Levels_Objects_Wall(reader));
         Register(typeof(WinObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_WinObjectDefinition((WinObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_WinObjectDefinition(reader));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void WriteSalmon_Levels_Objects_Builtin(Builtin value, BinaryWriter writer)
+    {
+        writer.Write(6u);
+
+        WriteStringField(writer, 3.0f, value.Target);
+
+        WriteVector3Field(writer, 2.0f, Clamp(value.Scale, 0.05f, float.NaN));
+
+        WriteVector3Field(writer, 0.0f, value.Position);
+
+        WriteVector3Field(writer, 1.0f, value.Rotation);
+
+        WriteStringField(writer, -999.0f, value.Name);
+
+        WriteUInt64Field(writer, -1.0f, value.ID);
+
+        writer.Write(false);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Builtin ReadSalmon_Levels_Objects_Builtin(BinaryReader reader)
+    {
+        var value = new Builtin();
+        var count = checked((ushort)reader.ReadUInt32());
+        for (var fieldIndex = 0u; fieldIndex < count; fieldIndex++)
+        {
+            var order = reader.ReadSingle();
+            var length = reader.ReadUInt32();
+            var fieldEnd = checked(reader.BaseStream.Position + length);
+            var handled = true;
+
+            switch (order)
+            {
+                case -999.0f:
+                    value.Name = reader.ReadString();
+                    break;
+                case -1.0f:
+                    value.ID = reader.ReadUInt64();
+                    break;
+                case 0.0f:
+                    value.Position = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                    break;
+                case 1.0f:
+                    value.Rotation = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                    break;
+                case 2.0f:
+                    value.Scale = Clamp(new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()), 0.05f, float.NaN);
+                    break;
+                case 3.0f:
+                    value.Target = reader.ReadString();
+                    break;
+                default:
+                    handled = false;
+                    break;
+            }
+
+            if (handled && reader.BaseStream.Position != fieldEnd)
+            {
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.Builtin has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+            }
+
+            reader.BaseStream.Position = fieldEnd;
+        }
+
+        if (reader.ReadBoolean())
+        {
+            var specialLength = reader.ReadUInt32();
+            var specialEnd = checked(reader.BaseStream.Position + specialLength);
+            reader.BaseStream.Position = specialEnd;
+        }
+
+        return value;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1529,7 +1620,7 @@ internal static partial class GeneratedDynamicSerializers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void WriteSalmon_Levels_Objects_SettingsDefinition(SettingsDefinition value, BinaryWriter writer)
     {
-        writer.Write(19u);
+        writer.Write(22u);
 
         WriteBooleanField(writer, -1.0f, value.AutoSave);
 
@@ -1558,6 +1649,12 @@ internal static partial class GeneratedDynamicSerializers
         WriteInt32Field(writer, 8.5f, Clamp(value.FogIntensity, 0.0f, 20.0f));
 
         WriteSingleField(writer, 9.0f, Clamp(value.DeathY, -1000.0f, 1000.0f));
+
+        WriteBooleanField(writer, 9.1f, value.DisplayStyle);
+
+        WriteBooleanField(writer, 9.2f, value.AllowWalls);
+
+        WriteBooleanField(writer, 9.3f, value.AllowCoyote);
 
         WriteBooleanField(writer, 10.0f, value.PreviewGuide);
 
@@ -1630,6 +1727,15 @@ internal static partial class GeneratedDynamicSerializers
                     break;
                 case 9.0f:
                     value.DeathY = Clamp(reader.ReadSingle(), -1000.0f, 1000.0f);
+                    break;
+                case 9.1f:
+                    value.DisplayStyle = reader.ReadBoolean();
+                    break;
+                case 9.2f:
+                    value.AllowWalls = reader.ReadBoolean();
+                    break;
+                case 9.3f:
+                    value.AllowCoyote = reader.ReadBoolean();
                     break;
                 case 10.0f:
                     value.PreviewGuide = reader.ReadBoolean();

@@ -6,7 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>SalmonFile</PackageId>
-    <Version>22.2.0</Version>
+    <Version>22.4.0</Version>
     <Authors>SeaSharpy</Authors>
     <Description>The .salmon file format library for SALMON levels.</Description>
     <PackageTags>salmon level file format serialization</PackageTags>

@@ -28,7 +28,8 @@ internal sealed class DynamicInspectorType(DynamicInspectorField[] fields, Dynam
 }
 internal static class TypeCache
 {
-    public static Dictionary<Type, DynamicInspectorType> Types = new();
+    [ThreadStatic]
+    private static Dictionary<Type, DynamicInspectorType> Types;
     private static object ClampNumber(object value, Type type, float min, float max)
     {
         var hasMin = !float.IsNaN(min);
@@ -138,8 +139,15 @@ internal static class TypeCache
     }
     public static DynamicInspectorType Get(Type type)
     {
-        if (Types.TryGetValue(type, out var serializerType))
+        var types = Types ??= [];
+        if (types.TryGetValue(type, out var serializerType))
             return serializerType;
+        serializerType = Create(type);
+        types[type] = serializerType;
+        return serializerType;
+    }
+    private static DynamicInspectorType Create(Type type)
+    {
         List<DynamicInspectorField> dynamicFields = new List<DynamicInspectorField>();
         List<DynamicInspectorButton> dynamicButtons = new List<DynamicInspectorButton>();
         var fields = type.GetFields(
@@ -199,8 +207,6 @@ internal static class TypeCache
             if (field.Attribute.Handle != InspectorHandleType.None)
                 fieldsByHandle[field.Attribute.Handle] = field;
         }
-        serializerType = new DynamicInspectorType(dynamicFields.OrderBy(field => field.Order).ToArray(), dynamicButtons.OrderBy(button => button.Order).ToArray(), fieldsByOrder, fieldsByHandle);
-        Types[type] = serializerType;
-        return serializerType;
+        return new DynamicInspectorType(dynamicFields.OrderBy(field => field.Order).ToArray(), dynamicButtons.OrderBy(button => button.Order).ToArray(), fieldsByOrder, fieldsByHandle);
     }
 }

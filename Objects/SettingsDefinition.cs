@@ -1,6 +1,6 @@
 namespace Salmon.Levels.Objects;
 
-/// <summary>Stores editor, environment, and preview settings embedded in a level.</summary>
+/// <summary>Stores editor, environment, gameplay, and preview settings embedded in a level.</summary>
 public sealed partial class SettingsDefinition
 {
     [InspectorField("Title", Order = -2, NoSave = true)]
@@ -61,6 +61,18 @@ public sealed partial class SettingsDefinition
     /// <summary>The world-space height below which the player dies.</summary>
     [InspectorField("Death Y", Order = 9, Min = -1000f, Max = 1000f, Slider = true)]
     public float DeathY = 0f;
+
+    /// <summary>Whether style points are displayed during gameplay.</summary>
+    [InspectorField("Display Style", Order = 9.1f)]
+    public bool DisplayStyle = true;
+
+    /// <summary>Whether the player can jump from wall contacts.</summary>
+    [InspectorField("Allow Walls", Order = 9.2f)]
+    public bool AllowWalls = true;
+
+    /// <summary>Whether the player can jump during the coyote-time grace period after leaving a surface.</summary>
+    [InspectorField("Allow Coyote", Order = 9.3f)]
+    public bool AllowCoyote = true;
 
     /// <summary>Whether the editor displays the preview camera guide.</summary>
     [InspectorField("Preview Guide", Order = 10)]

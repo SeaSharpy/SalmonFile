@@ -22,7 +22,9 @@ public enum WallMode : byte
     Collision,
     /// <summary>The wall is rendered but has no collision.</summary>
     [InspectorName("visuals")]
-    Visuals
+    Visuals,
+    [InspectorName("trigger")]
+    Trigger
 }
 
 /// <summary>Identifies one of the four horizontal world-axis directions.</summary>
