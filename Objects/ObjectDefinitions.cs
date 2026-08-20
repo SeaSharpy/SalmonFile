@@ -28,8 +28,10 @@ public abstract partial class PhysicalObjectDefinition : ObjectDefinition
 #endif
 
 /// <summary>Stores a set of persistent level object identifiers.</summary>
-public sealed partial class ObjectReferences : ISpecialSerializable
+public sealed partial class ObjectReferences() : ISpecialSerializable
 {
+    /// <summary> Creates an object references with some IDs.</summary>
+    public ObjectReferences(params ulong[] ids) : this() => IDs.UnionWith(ids);
     /// <summary>
     /// The referenced object identifiers. 
     /// More than 8 will cause strange UI glitches and more than 255 will not save correctly. 
@@ -158,7 +160,7 @@ public sealed partial class Group : UniformScaledObjectDefinition, ISpecialSeria
 public partial class Builtin : ScaledObjectDefinition
 {
     [InspectorField("Target", Order = 3, Options = "Prefabs")]
-    public string Target;
+    public string Target = "";
 }
 
 /// <summary>Defines a rendered and/or collidable wall.</summary>
@@ -529,6 +531,13 @@ public sealed partial class IfTriggerObjectDefinition : ObjectDefinition
     /// <summary>The objects triggered when the comparison fails.</summary>
     [InspectorField("False Trigger", Order = 9)]
     public ObjectReferences FalseTrigger = new();
+}
+
+[ObjectType("Random Trigger")]
+public sealed partial class RandomTriggerObjectDefinition : ObjectDefinition
+{
+    [InspectorField("Trigger", Order = 3.5f)]
+    public ObjectReferences Trigger = new();
 }
 
 /// <summary>Changes the material of referenced walls.</summary>

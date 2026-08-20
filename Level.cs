@@ -16,6 +16,7 @@ public sealed partial class Level : IDisposable
     private bool EnvironmentLoaded;
     private int Version = CurrentVersion;
     private string IDInternal = "";
+    internal uint Coins => ObjectsSection.Coins;
 
     /// <summary>The level file's last modification time in UTC.</summary>
     public DateTime LastModifiedUTC;

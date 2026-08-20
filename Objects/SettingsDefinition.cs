@@ -58,6 +58,10 @@ public sealed partial class SettingsDefinition
     [InspectorField("Fog Intensity", Order = 8.5f, Min = 0, Max = 20, Slider = true)]
     public int FogIntensity = 3;
 
+    /// <summary>Whether or not to apply the above colours and fog in the editor.</summary>
+    [InspectorField("Preview Mode", Order = 8.6f)]
+    public bool PreviewMode = true;
+
     /// <summary>The world-space height below which the player dies.</summary>
     [InspectorField("Death Y", Order = 9, Min = -1000f, Max = 1000f, Slider = true)]
     public float DeathY = 0f;

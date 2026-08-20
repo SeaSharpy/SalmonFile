@@ -78,7 +78,7 @@ internal static partial class GeneratedDynamicSerializers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void WriteSalmon_Levels_Objects_SettingsDefinition(SettingsDefinition value, BinaryWriter writer)
     {
-        writer.Write(22u);
+        writer.Write(23u);
 
         WriteBooleanField(writer, -1.0f, value.AutoSave);
 
@@ -105,6 +105,8 @@ internal static partial class GeneratedDynamicSerializers
         WriteSingleField(writer, 7.3f, Clamp(value.Blue, 0.0f, 1.0f));
 
         WriteInt32Field(writer, 8.5f, Clamp(value.FogIntensity, 0.0f, 20.0f));
+
+        WriteBooleanField(writer, 8.6f, value.PreviewMode);
 
         WriteSingleField(writer, 9.0f, Clamp(value.DeathY, -1000.0f, 1000.0f));
 
@@ -182,6 +184,9 @@ internal static partial class GeneratedDynamicSerializers
                     break;
                 case 8.5f:
                     value.FogIntensity = Clamp(reader.ReadInt32(), 0.0f, 20.0f);
+                    break;
+                case 8.6f:
+                    value.PreviewMode = reader.ReadBoolean();
                     break;
                 case 9.0f:
                     value.DeathY = Clamp(reader.ReadSingle(), -1000.0f, 1000.0f);
@@ -264,6 +269,7 @@ internal static partial class GeneratedDynamicSerializers
         Register(typeof(MagnetPointObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_MagnetPointObjectDefinition((MagnetPointObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_MagnetPointObjectDefinition(reader));
         Register(typeof(MoveTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_MoveTriggerObjectDefinition((MoveTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_MoveTriggerObjectDefinition(reader));
         Register(typeof(ObjectReferences), static (value, writer) => WriteSalmon_Levels_Objects_ObjectReferences((ObjectReferences)value, writer), static reader => ReadSalmon_Levels_Objects_ObjectReferences(reader));
+        Register(typeof(RandomTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_RandomTriggerObjectDefinition((RandomTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_RandomTriggerObjectDefinition(reader));
         Register(typeof(RotationTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_RotationTriggerObjectDefinition((RotationTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_RotationTriggerObjectDefinition(reader));
         Register(typeof(SetMaterialTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_SetMaterialTriggerObjectDefinition((SetMaterialTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_SetMaterialTriggerObjectDefinition(reader));
         Register(typeof(SettingsDefinition), static (value, writer) => WriteSalmon_Levels_Objects_SettingsDefinition((SettingsDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_SettingsDefinition(reader));
@@ -1458,6 +1464,66 @@ internal static partial class GeneratedDynamicSerializers
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void WriteSalmon_Levels_Objects_RandomTriggerObjectDefinition(RandomTriggerObjectDefinition value, BinaryWriter writer)
+    {
+        writer.Write(3u);
+
+        WriteObjectReferencesField(writer, 3.5f, value.Trigger);
+
+        WriteStringField(writer, -999.0f, value.Name);
+
+        WriteUInt64Field(writer, -1.0f, value.ID);
+
+        writer.Write(false);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static RandomTriggerObjectDefinition ReadSalmon_Levels_Objects_RandomTriggerObjectDefinition(BinaryReader reader)
+    {
+        var value = new RandomTriggerObjectDefinition();
+        var count = checked((ushort)reader.ReadUInt32());
+        for (var fieldIndex = 0u; fieldIndex < count; fieldIndex++)
+        {
+            var order = reader.ReadSingle();
+            var length = reader.ReadUInt32();
+            var fieldEnd = checked(reader.BaseStream.Position + length);
+            var handled = true;
+
+            switch (order)
+            {
+                case -999.0f:
+                    value.Name = reader.ReadString();
+                    break;
+                case -1.0f:
+                    value.ID = reader.ReadUInt64();
+                    break;
+                case 3.5f:
+                    value.Trigger = ReadSalmon_Levels_Objects_ObjectReferences(reader);
+                    break;
+                default:
+                    handled = false;
+                    break;
+            }
+
+            if (handled && reader.BaseStream.Position != fieldEnd)
+            {
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.RandomTriggerObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+            }
+
+            reader.BaseStream.Position = fieldEnd;
+        }
+
+        if (reader.ReadBoolean())
+        {
+            var specialLength = reader.ReadUInt32();
+            var specialEnd = checked(reader.BaseStream.Position + specialLength);
+            reader.BaseStream.Position = specialEnd;
+        }
+
+        return value;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void WriteSalmon_Levels_Objects_RotationTriggerObjectDefinition(RotationTriggerObjectDefinition value, BinaryWriter writer)
     {
         writer.Write(10u);
@@ -1620,7 +1686,7 @@ internal static partial class GeneratedDynamicSerializers
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static void WriteSalmon_Levels_Objects_SettingsDefinition(SettingsDefinition value, BinaryWriter writer)
     {
-        writer.Write(22u);
+        writer.Write(23u);
 
         WriteBooleanField(writer, -1.0f, value.AutoSave);
 
@@ -1647,6 +1713,8 @@ internal static partial class GeneratedDynamicSerializers
         WriteSingleField(writer, 7.3f, Clamp(value.Blue, 0.0f, 1.0f));
 
         WriteInt32Field(writer, 8.5f, Clamp(value.FogIntensity, 0.0f, 20.0f));
+
+        WriteBooleanField(writer, 8.6f, value.PreviewMode);
 
         WriteSingleField(writer, 9.0f, Clamp(value.DeathY, -1000.0f, 1000.0f));
 
@@ -1724,6 +1792,9 @@ internal static partial class GeneratedDynamicSerializers
                     break;
                 case 8.5f:
                     value.FogIntensity = Clamp(reader.ReadInt32(), 0.0f, 20.0f);
+                    break;
+                case 8.6f:
+                    value.PreviewMode = reader.ReadBoolean();
                     break;
                 case 9.0f:
                     value.DeathY = Clamp(reader.ReadSingle(), -1000.0f, 1000.0f);
