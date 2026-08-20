@@ -23,6 +23,7 @@ public enum WallMode : byte
     /// <summary>The wall is rendered but has no collision.</summary>
     [InspectorName("visuals")]
     Visuals,
+    /// <summary>The wall is not rendered and has no collision. It just triggers on touch events.</summary>
     [InspectorName("trigger")]
     Trigger
 }

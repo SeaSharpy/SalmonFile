@@ -156,9 +156,11 @@ public sealed partial class Group : UniformScaledObjectDefinition, ISpecialSeria
     }
 }
 
+/// <exclude />
 [ObjectType("Builtin")]
 public partial class Builtin : ScaledObjectDefinition
 {
+    /// <exclude />
     [InspectorField("Target", Order = 3, Options = "Prefabs")]
     public string Target = "";
 }
@@ -533,9 +535,11 @@ public sealed partial class IfTriggerObjectDefinition : ObjectDefinition
     public ObjectReferences FalseTrigger = new();
 }
 
+/// <summary>Triggers a random one of the object references.</summary>
 [ObjectType("Random Trigger")]
 public sealed partial class RandomTriggerObjectDefinition : ObjectDefinition
 {
+    /// <summary>The objects which will have one triggered.</summary>
     [InspectorField("Trigger", Order = 3.5f)]
     public ObjectReferences Trigger = new();
 }
