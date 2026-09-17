@@ -49,7 +49,6 @@ public sealed class ObjectsSection : LevelSection
                 Coins++;
         Errors.Clear();
         Warnings.Clear();
-        var touchTriggerWarned = 0;
         foreach (var obj in objects)
             switch (obj)
             {
@@ -75,10 +74,6 @@ public sealed class ObjectsSection : LevelSection
                         Warnings.Add($"Wall {wallPath} has On Break set or Break Velocity enabled in Visuals mode. Use a collision mode instead.");
                     if (wall.Trigger.IDs.Count > 0 && wall.BreakVelocity < 0f)
                         Warnings.Add($"Wall {wallPath} has On Break set while Break Velocity is disabled.");
-                    break;
-                case TouchTriggerObjectDefinition touchTrigger:
-                    if (touchTriggerWarned++ == 0)
-                        Warnings.Add("Touch triggers are soon to be replaced by just walls with On Touch.");
                     break;
             }
     }

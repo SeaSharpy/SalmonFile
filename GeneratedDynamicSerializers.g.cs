@@ -269,6 +269,7 @@ internal static partial class GeneratedDynamicSerializers
         Register(typeof(MagnetPointObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_MagnetPointObjectDefinition((MagnetPointObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_MagnetPointObjectDefinition(reader));
         Register(typeof(MoveTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_MoveTriggerObjectDefinition((MoveTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_MoveTriggerObjectDefinition(reader));
         Register(typeof(ObjectReferences), static (value, writer) => WriteSalmon_Levels_Objects_ObjectReferences((ObjectReferences)value, writer), static reader => ReadSalmon_Levels_Objects_ObjectReferences(reader));
+        Register(typeof(PortalObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_PortalObjectDefinition((PortalObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_PortalObjectDefinition(reader));
         Register(typeof(RandomTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_RandomTriggerObjectDefinition((RandomTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_RandomTriggerObjectDefinition(reader));
         Register(typeof(RotationTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_RotationTriggerObjectDefinition((RotationTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_RotationTriggerObjectDefinition(reader));
         Register(typeof(SetMaterialTriggerObjectDefinition), static (value, writer) => WriteSalmon_Levels_Objects_SetMaterialTriggerObjectDefinition((SetMaterialTriggerObjectDefinition)value, writer), static reader => ReadSalmon_Levels_Objects_SetMaterialTriggerObjectDefinition(reader));
@@ -1457,6 +1458,81 @@ internal static partial class GeneratedDynamicSerializers
             {
                 Debug.LogWarning($"Special read on Salmon.Levels.Objects.ObjectReferences has length {specialLength} but read {reader.BaseStream.Position - (specialEnd - specialLength)} bytes.");
             }
+            reader.BaseStream.Position = specialEnd;
+        }
+
+        return value;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void WriteSalmon_Levels_Objects_PortalObjectDefinition(PortalObjectDefinition value, BinaryWriter writer)
+    {
+        writer.Write(6u);
+
+        WriteVector3Field(writer, 3.0f, value.Offset);
+
+        WriteVector3Field(writer, 2.0f, Clamp(value.Scale, 0.05f, float.NaN));
+
+        WriteVector3Field(writer, 0.0f, value.Position);
+
+        WriteVector3Field(writer, 1.0f, value.Rotation);
+
+        WriteStringField(writer, -999.0f, value.Name);
+
+        WriteUInt64Field(writer, -1.0f, value.ID);
+
+        writer.Write(false);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static PortalObjectDefinition ReadSalmon_Levels_Objects_PortalObjectDefinition(BinaryReader reader)
+    {
+        var value = new PortalObjectDefinition();
+        var count = checked((ushort)reader.ReadUInt32());
+        for (var fieldIndex = 0u; fieldIndex < count; fieldIndex++)
+        {
+            var order = reader.ReadSingle();
+            var length = reader.ReadUInt32();
+            var fieldEnd = checked(reader.BaseStream.Position + length);
+            var handled = true;
+
+            switch (order)
+            {
+                case -999.0f:
+                    value.Name = reader.ReadString();
+                    break;
+                case -1.0f:
+                    value.ID = reader.ReadUInt64();
+                    break;
+                case 0.0f:
+                    value.Position = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                    break;
+                case 1.0f:
+                    value.Rotation = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                    break;
+                case 2.0f:
+                    value.Scale = Clamp(new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()), 0.05f, float.NaN);
+                    break;
+                case 3.0f:
+                    value.Offset = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                    break;
+                default:
+                    handled = false;
+                    break;
+            }
+
+            if (handled && reader.BaseStream.Position != fieldEnd)
+            {
+                Debug.LogWarning($"Field {order} on Salmon.Levels.Objects.PortalObjectDefinition has length {length} but read {reader.BaseStream.Position - (fieldEnd - length)} bytes.");
+            }
+
+            reader.BaseStream.Position = fieldEnd;
+        }
+
+        if (reader.ReadBoolean())
+        {
+            var specialLength = reader.ReadUInt32();
+            var specialEnd = checked(reader.BaseStream.Position + specialLength);
             reader.BaseStream.Position = specialEnd;
         }
 

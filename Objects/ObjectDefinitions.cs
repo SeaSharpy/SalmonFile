@@ -613,4 +613,14 @@ public sealed partial class CoinObjectDefinition : UniformScaledObjectDefinition
     [InspectorField("On Pickup", Order = 4)]
     public ObjectReferences OnPickup = new();
 }
+
+/// <summary>Defines a teleporter that applies an offset rather than exact teleport to your player.</summary>
+
+[ObjectType("Portal")]
+public sealed partial class PortalObjectDefinition : ScaledObjectDefinition
+{
+    /// <summary>Offset to apply to the player.</summary>
+    [InspectorField("Offset", Order = 3)]
+    public Vector3 Offset = new(0, 10, 0);
+}
 #endif
