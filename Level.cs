@@ -1,12 +1,11 @@
-#if !DEMO_APP
 namespace Salmon.Levels;
 
 /// <summary>Represents a versioned <c>.salmon</c> level and its lazily loaded sections.</summary>
 public sealed partial class Level : IDisposable
 {
-    private const int CurrentVersion = 22;
+    public const int CurrentVersion = 23;
     private const int MinVersion = 21;
-    private const string Magic = "SALMONLEVEL";
+    public const string Magic = "SALMONLEVEL";
     private readonly Dictionary<SectionKind, SectionHeader> Sections = [];
     /// <summary>The open stream backing this level, or <see langword="null"/> for a new level.</summary>
     public FileStream Stream;
@@ -114,15 +113,15 @@ public sealed partial class Level : IDisposable
         var paths = Directory.GetFiles(System.IO.Path.Combine(StorageLocations.LevelPath, mode.ToString()), $"*.salmon");
         var levels = new List<Level>(paths.Length);
 
-        for (var i = 0; i < paths.Length; i++)
+        foreach (string path in paths)
         {
-            if (reusableLevel != null && reusableLevel.Mode == mode && string.Equals(System.IO.Path.GetFileNameWithoutExtension(paths[i]), reusableLevel.ID, StringComparison.OrdinalIgnoreCase))
+            if (reusableLevel != null && reusableLevel.Mode == mode && string.Equals(System.IO.Path.GetFileNameWithoutExtension(path), reusableLevel.ID, StringComparison.OrdinalIgnoreCase))
             {
                 levels.Add(reusableLevel);
                 continue;
             }
 
-            if (!TryOpen(paths[i], out var level))
+            if (!TryOpen(path, out var level))
                 continue;
 
             level.Mode = mode;
@@ -190,8 +189,8 @@ public sealed partial class Level : IDisposable
             WriteHeader(writer, sections, sections.Length);
 
         outWriter.Write(header.GetBuffer(), 0, (int)header.Length);
-        for (var i = 0; i < sections.Length; i++)
-            outWriter.Write(sections[i].bytes, 0, sections[i].bytes.Length);
+        foreach (var section in sections)
+            outWriter.Write(section.bytes, 0, section.bytes.Length);
     }
 
     /// <summary>Writes the level to <see cref="Path"/>, replacing its current contents.</summary>
@@ -372,4 +371,3 @@ public sealed partial class Level : IDisposable
         Materials = 5,
     }
 }
-#endif

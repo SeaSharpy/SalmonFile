@@ -1,4 +1,3 @@
-#if !DEMO_APP
 namespace Salmon.Levels.Sections;
 
 /// <summary>Stores a fixed-size RGB preview image for a level.</summary>
@@ -34,4 +33,3 @@ public sealed partial class PreviewSection : LevelSection
     }
 
 }
-#endif

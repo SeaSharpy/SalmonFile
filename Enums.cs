@@ -1,13 +1,13 @@
 namespace Salmon.Levels.Enums;
 
-/// <summary>Identifies the storage category containing a level.</summary>
+/// <summary>Identifies the folder to put the level in.</summary>
 public enum StoredMode : byte
 {
-    /// <summary>A level created locally by the player.</summary>
+    /// <summary>My levels.</summary>
     Created,
-    /// <summary>A level downloaded from an external source.</summary>
+    /// <summary>Downloaded levels.</summary>
     Downloaded,
-    /// <summary>A level bundled with the game.</summary>
+    /// <summary>Play.</summary>
     Main,
 }
 
@@ -81,7 +81,7 @@ internal enum Comparison : byte
     LessOrEqual
 }
 
-/// <summary>Specifies how a toggle trigger changes an object's enabled state.</summary>
+/// <summary>Specifies how a toggle trigger changes an object.</summary>
 public enum ToggleMode : byte
 {
     /// <summary>Enables the object.</summary>
@@ -90,7 +90,7 @@ public enum ToggleMode : byte
     /// <summary>Disables the object.</summary>
     [InspectorName("off")]
     Off,
-    /// <summary>Inverts the object's current enabled state.</summary>
+    /// <summary>Flips the object. (what even is the point of this whole thing)</summary>
     [InspectorName("flip")]
     Flip
 }

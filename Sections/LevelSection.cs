@@ -1,4 +1,3 @@
-#if !DEMO_APP
 using System.IO.Compression;
 namespace Salmon.Levels.Sections;
 
@@ -18,14 +17,30 @@ public abstract class LevelSection : IDisposable
     internal void Read(BinaryReader reader, SectionHeader section, int version)
     {
         Version = version;
-        reader.BaseStream.Position = section.Offset;
-        byte[] bytes = reader.ReadBytes((int)section.Length);
-        using var compressedStream = new MemoryStream(bytes);
-        using var decompressedStream = new MemoryStream();
-        Decompress(compressedStream, decompressedStream);
-        decompressedStream.Position = 0;
-        using var subReader = new BinaryReader(decompressedStream);
-        Read(subReader);
+        var oldRead = DynamicSerializer.OldRead;
+        DynamicSerializer.OldRead = version <= 22;
+        try
+        {
+            reader.BaseStream.Position = section.Offset;
+            using var sectionStream = new MemoryStream(reader.ReadBytes((int)section.Length));
+            using var sectionReader = new BinaryReader(sectionStream);
+            var compressed = version < 23 || sectionReader.ReadBoolean();
+            if (!compressed)
+            {
+                Read(sectionReader);
+                return;
+            }
+            using var decompressedStream = new MemoryStream();
+            using (var deflate = new DeflateStream(sectionStream, CompressionMode.Decompress, true))
+                deflate.CopyTo(decompressedStream);
+            decompressedStream.Position = 0;
+            using var subReader = new BinaryReader(decompressedStream);
+            Read(subReader);
+        }
+        finally
+        {
+            DynamicSerializer.OldRead = oldRead;
+        }
     }
     internal byte[] Write()
     {
@@ -33,23 +48,12 @@ public abstract class LevelSection : IDisposable
         using var writer = new BinaryWriter(stream);
         Write(writer); 
         writer.Flush();
-        return Compress(stream);
-    }
-    private static byte[] Compress(MemoryStream bytes)
-    {
-        bytes.Position = 0;
+        stream.Position = 0;
         using var output = new MemoryStream();
-
+        output.WriteByte(1);
         using (var deflate = new DeflateStream(output, CompressionLevel.Optimal, true))
-            bytes.CopyTo(deflate);
-
+            stream.CopyTo(deflate);
         return output.ToArray();
-    }
-
-    private static void Decompress(MemoryStream input, MemoryStream output)
-    {
-        using var deflate = new DeflateStream(input, CompressionMode.Decompress);
-        deflate.CopyTo(output);
     }
     internal virtual void Read(BinaryReader reader) { }
     internal virtual void Write(BinaryWriter writer) { }
@@ -58,4 +62,3 @@ public abstract class LevelSection : IDisposable
     /// <summary>Normalizes section values after reading and before writing.</summary>
     public virtual void Normalize() { }
 }
-#endif

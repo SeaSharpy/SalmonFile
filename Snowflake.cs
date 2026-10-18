@@ -1,6 +1,6 @@
 namespace Salmon;
 using System.Security.Cryptography;
-/// <summary>Creates identifiers for SALMON data.</summary>
+/// <summary>Creates IDs for SALMON things.</summary>
 public static class Snowflake
 {
     private const int SequenceBits = 12;
@@ -10,7 +10,7 @@ public static class Snowflake
         new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero).ToUnixTimeMilliseconds();
     private static long LastTimestamp;
     private static int Sequence;
-    /// <summary>Creates a numeric identifier suitable for an uploadable level.</summary>
+    /// <summary>Creates a very long number for an uploadable level.</summary>
     /// <returns>A string containing only decimal digits.</returns>
     public static string Create()
     {

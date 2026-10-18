@@ -15,23 +15,30 @@ public enum InspectorHandleType : byte
 }
 
 /// <summary>Describes how a field or property is serialized and displayed in the dynamic inspector.</summary>
-/// <param name="label">The label shown in the inspector.</param>
+/// <param name="label">The field label when displayed in inspectors. </param>
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-public sealed class InspectorFieldAttribute(string label) : Attribute
+public sealed class InspectorFieldAttribute(string label = "") : Attribute
 {
-    /// <summary>The user-facing field label.</summary>
+    /// <summary>The field label when displayed in inspectors. Do not include this on serialization only fields.</summary>
     public string Label => label;
-    /// <summary>The field's sort and serialization key.</summary>
-    public float Order;
-    /// <summary>The optional minimum numeric value.</summary>
+
+    /// <summary>The visual order when displayed in inspectors. Do not use this on serialization only fields.</summary>
+    public uint Order;
+    /// <exclude />
+    public float OldOrder = float.NaN;
+    /// <summary>The serialization field ID. Must stay constant for a field once added.</summary>
+    public byte ID;
+    /// <summary>The minimum for a number (leave at NaN for none).</summary>
     public float Min = float.NaN;
-    /// <summary>The optional maximum numeric value.</summary>
+    /// <summary>The maximum for a number (leave at NaN for none).</summary>
     public float Max = float.NaN;
     /// <summary>The scene handle used to edit the field.</summary>
     public InspectorHandleType Handle;
     /// <summary>Whether the inspector uses a multiline text editor.</summary>
     public bool Multiline;
-    /// <summary>Whether numeric values are displayed with a slider.</summary>
+    /// <summary>The maximum length for a string (leave at -1 for unlimited).</summary>
+    public int MaxLength = -1;
+    /// <summary>Whether a number field uses a slider in the inspector.</summary>
     public bool Slider;
     /// <exclude />
     public bool NoSave;
@@ -39,11 +46,20 @@ public sealed class InspectorFieldAttribute(string label) : Attribute
     public bool NoInspect;
     /// <exclude />
     public bool Old;
-    /// <summary>The named option source used by the inspector.</summary>
+    /// <summary>
+    /// A named options source used in the inspector for a string.
+    /// Sources:
+    /// "Materials"
+    /// "Shapes"
+    /// "BackgroundMeshes"
+    /// "Prefabs" (for Builtin)
+    /// "Skins"
+    /// "Hats"
+    /// </summary>
     public string Options = "";
 }
 
-/// <summary>Overrides the user-facing name of an inspector enum.</summary>
+/// <summary>Overrides the name of an enum value when displayed in inspectors.</summary>
 /// <param name="name">The name shown in the inspector.</param>
 [AttributeUsage(AttributeTargets.Field)]
 public sealed class InspectorNameAttribute(string name) : Attribute
@@ -53,12 +69,12 @@ public sealed class InspectorNameAttribute(string name) : Attribute
 }
 
 /// <summary>Exposes a method as a button in the dynamic inspector.</summary>
-/// <param name="label">The label shown on the button.</param>
+/// <param name="label">The button label.</param>
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class InspectorButtonAttribute(string label) : Attribute
 {
     /// <summary>The button label.</summary>
     public string Label => label;
-    /// <summary>The button's sort order.</summary>
+    /// <summary>The visual order (always after fields).</summary>
     public float Order;
 }

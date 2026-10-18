@@ -47,17 +47,12 @@ internal static class Vector3Extensions
 }
 internal static class Debug
 {
-    public static void Log(object message) => Console.WriteLine(message);
-    public static void LogException(Exception exception) => Console.WriteLine(exception);
+    public static void LogException(Exception exception) => Console.Error.WriteLine(exception);
     public static void LogWarning(object message) => Console.WriteLine(message);
 }
 
 namespace Salmon
 {
-    internal static class CustomMaterials
-    {
-        public static string GetKey(int index) => $"Custom {index + 1}";
-    }
     /// <summary>Provides storage paths relative to the process's current working directory.</summary>
     public static class StorageLocations
     {

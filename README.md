@@ -6,7 +6,7 @@ The `.salmon` file format library for SALMON levels. It does not cover the game'
 
 ## Creating and saving a level
 
-Create a `Level`, generate its numeric ID with `Snowflake.Create()`, then add
+Create a `Level`, generate its ID with `Snowflake.Create()`, then add
 objects to its root group. The uploading only accepts numeric IDs, and `Snowflake.Create()`
 generates the expected form without your input.
 

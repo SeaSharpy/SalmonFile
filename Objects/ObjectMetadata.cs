@@ -1,4 +1,3 @@
-#if !DEMO_APP
 using System.Reflection;
 
 namespace Salmon.Levels.Objects;
@@ -46,7 +45,8 @@ internal static class ObjectMetadata
         ["Counter Trigger"] = 21,
         ["If Trigger"] = 22,
         ["Random Trigger"] = 23,
-        ["Builtin"] = 24,
+        ["Water"] = 24,
+        ["Builtin"] = 25,
     };
     private static readonly Dictionary<Type, string> DisplayNamesByType = [];
     private static readonly Dictionary<Type, byte[]> DisplayBytesByType = [];
@@ -114,4 +114,3 @@ internal static class ObjectMetadata
         return stream.ToArray();
     }
 }
-#endif
